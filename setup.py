@@ -1,17 +1,37 @@
-from setuptools import setup
+from setuptools import setup, find_packages
+
+
+package_name = 'aiostorage'
+long_description = (
+    'Interface for performing common object storage operations '
+    'asynchronously. The aim is to support multiple object storage '
+    'providers, e.g. Google Cloud, Backblaze, etc.'
+)
+version = '0.1.0'
+classifiers = [
+    'Development Status :: 1 - Planning',
+
+    'Intended Audience :: Developers',
+
+    'Programming Language :: Python :: 3.6',
+]
+requirements = (
+    'aiohttp>=2.0,<3.0',
+)
 
 setup(
-    name='aiostorage',
-    version='0.1.0',
+    name=package_name,
     description='Asynchronous object storage',
-    long_description='Interface for performing common object storage '
-                     'operations asynchronously. The aim is to support '
-                     'multiple object storage providers, e.g. Google Cloud, '
-                     'Backblaze, etc.',
+    long_description=long_description,
+
+    version=version,
+    packages=find_packages(),
+
+    install_requires=requirements,
+    classifiers=classifiers,
+
     author='Guy King',
     author_email='guy@zorncapital.com',
-    packages=[],
-    classifiers=['Development Status :: 1 - Planning'],
 )
 
 # example usage
