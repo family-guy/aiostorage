@@ -25,7 +25,7 @@ setup(
     long_description=long_description,
 
     version=version,
-    packages=find_packages(),
+    packages=find_packages(exclude=('tests', )),
 
     install_requires=requirements,
     classifiers=classifiers,
