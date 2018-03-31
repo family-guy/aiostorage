@@ -32,6 +32,8 @@ setup(
 
     author='Guy King',
     author_email='guy@zorncapital.com',
+    license='MIT',
+    url='https://github.com/family-guy/aiostorage.git',
 )
 
 # example usage
