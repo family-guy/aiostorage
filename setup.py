@@ -16,7 +16,7 @@ classifiers = [
     'Programming Language :: Python :: 3.6',
 ]
 requirements = (
-    'aiohttp>=2.0,<3.0',
+    'aiohttp>=3.0,<4.0',
 )
 
 setup(
