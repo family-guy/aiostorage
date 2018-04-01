@@ -1,7 +1,12 @@
+import hashlib
+import logging
+import os
 import urllib.parse
 
 import aiohttp
 
+
+logger = logging.getLogger(__name__)
 
 class Backblaze:
 
@@ -51,3 +56,27 @@ class Backblaze:
                 response.raise_for_status()
                 response_js = await response.json()
                 return response_js
+
+    async def upload_file(self, bucket_id, file_to_upload, content_type):
+        try:
+            upload_details = await self._get_upload_url(bucket_id)
+        except aiohttp.ClientResponseError:
+            logger.exception('Unable to upload file')
+        else:
+            upload_url = upload_details.get('uploadUrl')
+            upload_token = upload_details.get('authorizationToken')
+            with open(file_to_upload, 'rb') as f:
+                file_data = f.read()
+            upload_headers = {
+                'Authorization': upload_token,
+                'X-Bz-File-Name': urllib.parse.quote(
+                    os.path.basename(file_to_upload)),
+                'Content-Type': content_type,
+                'X-Bz-Content-Sha1': hashlib.sha1(file_data).hexdigest()
+            }
+            async with aiohttp.ClientSession(
+                    headers=upload_headers) as session:
+                async with session.post(upload_url, data=file_data) as response:
+                    response.raise_for_status()
+                    response_js = await response.json()
+                    return response_js
