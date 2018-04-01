@@ -34,15 +34,14 @@ class Backblaze:
         auth = aiohttp.BasicAuth(self._account_id, self._app_key)
         async with aiohttp.ClientSession(auth=auth) as session:
             async with session.get(url, timeout=30) as response:
-                print('status code', response.status)
+                response.raise_for_status()
                 response_js = await response.json()
-                print('response', response_js)
-                self._authorized_base_url = response_js['apiUrl']
-                self._authorization_token = response_js['authorizationToken']
+                self._authorized_base_url = response_js.get('apiUrl')
+                self._authorization_token = response_js.get(
+                    'authorizationToken')
                 self._authorized_session = aiohttp.ClientSession(
                     headers={'Authorization': self._authorization_token})
-            print('type of session', type(self._authorized_session))
-            print('session', self._authorized_session)
+                return response_js
 
     async def f(self):
         url = self._create_url('list_buckets')
