@@ -43,14 +43,11 @@ class Backblaze:
                     headers={'Authorization': self._authorization_token})
                 return response_js
 
-    async def f(self):
-        url = self._create_url('list_buckets')
+    async def _get_upload_url(self, bucket_id):
+        url = self._create_url('get_upload_url')
         async with self._authorized_session as session:
-            async with session.post(url, json={'accountId': self._account_id}) as response:
-                print('status code', response.status)
+            async with session.post(
+                    url, json={'bucketId': bucket_id}) as response:
+                response.raise_for_status()
                 response_js = await response.json()
-                print('response', response_js)
-
-
-
-
+                return response_js
