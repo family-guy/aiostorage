@@ -7,7 +7,7 @@ long_description = (
     'asynchronously. The aim is to support multiple object storage '
     'providers, e.g. Google Cloud, Backblaze, etc.'
 )
-version = '0.1.1'
+version = '0.1.2'
 classifiers = [
     'Development Status :: 1 - Planning',
 
@@ -18,6 +18,11 @@ classifiers = [
 requirements = (
     'aiohttp>=3.0,<4.0',
 )
+project_urls = {
+    'Wiki': 'https://family-guy.github.io/aiostorage-wiki/',
+    'Source': 'https://github.com/family-guy/aiostorage.git',
+    'Tracker': 'https://github.com/family-guy/aiostorage/issues',
+}
 
 setup(
     name=package_name,
@@ -34,13 +39,5 @@ setup(
     author_email='guy@zorncapital.com',
     license='MIT',
     url='https://github.com/family-guy/aiostorage.git',
+    project_urls=project_urls,
 )
-
-# example usage
-# import aiostorage
-#
-# videos = ('video1.mp4', 'video2.mp4', 'video3.mp4')
-# storage = aiostorage.storage(provider='gcloud', auth='auth_details')
-# storage.authenticate()
-# for video in videos:
-#     storage.upload(video, upload_location)
