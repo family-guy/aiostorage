@@ -5,7 +5,7 @@ operations asynchronously.
 
 It currently supports the following object storage providers:
 
-- add providers here
+- [Backblaze](https://www.backblaze.com/b2/cloud-storage.html)
 
 # Installation
 
@@ -13,9 +13,9 @@ It currently supports the following object storage providers:
 
 # Contributing
 
-Follow these [open source contribution guidelines.](https://guyrking.com/2018/03/18/open-source-python-with-github-and-conda.html)
+Follow these [Python open source contribution guidelines.](https://guyrking.com/2018/03/18/open-source-python-with-github-and-conda.html)
 
 # Documentation
 
 - Add read thedocs link here
-- Add wiki link here
+- [Wiki](https://family-guy.github.io/aiostorage-wiki/)
