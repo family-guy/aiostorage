@@ -24,13 +24,6 @@ class Backblaze:
     }
 
     def __init__(self, account_id=None, app_key=None):
-        """
-        Inject user credentials.
-
-        :param account_id: Id of account to perform object storage operations
-                           on.
-        :param app_key: App key for the API.
-        """
         self._account_id = account_id
         self._app_key = app_key
         self._authorized_base_url = None
@@ -38,6 +31,13 @@ class Backblaze:
         self._authorized_session = None
 
     def _create_url(self, api_endpoint):
+        """
+        Create the full URL to an API endpoint.
+
+        :param str api_endpoint: The shortened form of the API endpoint.
+        :return: The full URL.
+        :rtype: str
+        """
         path = '{}{}{}'.format(self.API_NAME, self.API_VERSION,
                                self.API_ENDPOINTS[api_endpoint])
         if self._authorized_base_url is None:
@@ -46,6 +46,18 @@ class Backblaze:
             return urllib.parse.urljoin(self._authorized_base_url, path)
 
     async def authenticate(self):
+        """
+        Using the credentials provided when instantiating the class, retrieve
+        the base URL for subsequent API calls, as well as the authorization
+        token.
+
+        Create a HTTP session with the authorization token in the header.
+
+        Update class attributes.
+
+        :return: The JSON response from the Backblaze API.
+        :rtype: dict
+        """
         url = self._create_url('authorize_account')
         auth = aiohttp.BasicAuth(self._account_id, self._app_key)
         async with aiohttp.ClientSession(auth=auth) as session:
