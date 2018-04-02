@@ -8,6 +8,7 @@ import aiohttp
 
 logger = logging.getLogger(__name__)
 
+
 class Backblaze:
 
     API_NAME = 'b2api/'
@@ -76,7 +77,8 @@ class Backblaze:
             }
             async with aiohttp.ClientSession(
                     headers=upload_headers) as session:
-                async with session.post(upload_url, data=file_data) as response:
+                async with session.post(
+                        upload_url, data=file_data) as response:
                     response.raise_for_status()
                     response_js = await response.json()
                     return response_js

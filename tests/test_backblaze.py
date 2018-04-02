@@ -13,6 +13,7 @@ async def test_authenticate():
     result = await storage.authenticate()
     assert {'apiUrl', 'authorizationToken'}.issubset(result)
 
+
 @pytest.mark.asyncio
 async def test__get_upload_url():
     storage = Backblaze(account_id=BACKBLAZE_ACCOUNT_ID,
