@@ -9,7 +9,7 @@ It currently supports the following object storage providers:
 
 # Installation
 
-`aiostorage` is available on PyPI and can be installed in the usual way.
+`aiostorage` is available on [PyPI](https://pypi.python.org/pypi/aiostorage/) and can be installed in the usual way.
 
 # Contributing
 
