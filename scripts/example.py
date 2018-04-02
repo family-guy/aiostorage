@@ -7,19 +7,19 @@ import aiostorage.settings
 
 videos = (
     {
-        'file': 'tests/data/videos/Helene Fischer - Atemlos durch die Nacht.mp4',
+        'path': 'tests/data/videos/Helene Fischer - Atemlos durch die Nacht.mp4',
         'content_type': 'video/mp4',
     },
     {
-        'file': 'tests/data/videos/Luis Fonsi - Despacito ft Daddy Yankee.mp4',
+        'path': 'tests/data/videos/Luis Fonsi - Despacito ft Daddy Yankee.mp4',
         'content_type': 'video/mp4',
     },
     {
-        'file': 'tests/data/videos/Rino Gaetano - Ma il cielo è sempre più blu.webm',
+        'path': 'tests/data/videos/Rino Gaetano - Ma il cielo è sempre più blu.webm',
         'content_type': 'video/webm',
     },
     {
-        'file': 'tests/data/videos/Stromae - Alors On Danse.webm',
+        'path': 'tests/data/videos/Stromae - Alors On Danse.webm',
         'content_type': 'video/webm',
     },
 )
@@ -28,11 +28,11 @@ i = 20
 
 async def upload_video(storage, video):
     start = time.time()
-    print('{} Starting upload_video for {}...'.format('#' * i, video['file']))
+    print('{} Starting upload_video for {}...'.format('#' * i, video['path']))
     await storage.authenticate()
     bucket_id = aiostorage.settings.BACKBLAZE_TEST_BUCKET_ID
-    await storage.upload_file(bucket_id, video['file'], video['content_type'])
-    print('{} Uploaded {} in {}s'.format('#' * i, video['file'], time.time() - start))
+    await storage.upload_file(bucket_id, video['path'], video['content_type'])
+    print('{} Uploaded {} in {}s'.format('#' * i, video['path'], time.time() - start))
 
 
 async def run():
