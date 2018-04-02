@@ -1,3 +1,6 @@
+"""
+Class for interacting with the Backblaze cloud storage REST API.
+"""
 import hashlib
 import logging
 import os
@@ -21,6 +24,13 @@ class Backblaze:
     }
 
     def __init__(self, account_id=None, app_key=None):
+        """
+        Inject user credentials.
+
+        :param account_id: Id of account to perform object storage operations
+                           on.
+        :param app_key: App key for the API.
+        """
         self._account_id = account_id
         self._app_key = app_key
         self._authorized_base_url = None
