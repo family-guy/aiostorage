@@ -16,7 +16,8 @@ classifiers = [
     'Programming Language :: Python :: 3.6',
 ]
 requirements = (
-    'aiohttp>=2.0,<3.0',
+    'aiohttp>=2.0,<3.0',  # aiohttp>=3.0 requires python>=3.5.3 but readthedocs
+    # runs on python3.5
 )
 project_urls = {
     'Wiki': 'https://family-guy.github.io/aiostorage-wiki/',
