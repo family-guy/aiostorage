@@ -23,6 +23,7 @@ project_urls = {
     'Wiki': 'https://family-guy.github.io/aiostorage-wiki/',
     'Source': 'https://github.com/family-guy/aiostorage.git',
     'Tracker': 'https://github.com/family-guy/aiostorage/issues',
+    'Documentation': 'http://aiostorage.readthedocs.io/',
 }
 
 setup(
