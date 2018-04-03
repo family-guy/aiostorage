@@ -17,5 +17,5 @@ Follow these [Python open source contribution guidelines.](https://guyrking.com/
 
 # Documentation
 
-- Add read thedocs link here
+- [Code](http://aiostorage.readthedocs.io/en/latest/)
 - [Wiki](https://family-guy.github.io/aiostorage-wiki/)
