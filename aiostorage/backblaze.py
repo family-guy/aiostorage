@@ -104,9 +104,9 @@ class Backblaze:
         try:
             upload_info = await self._get_upload_url(bucket_id)
         except aiohttp.ClientResponseError:
-            logger.exception('Unable to upload file %s with content type %s '
-                             'to bucket %s. Status: %s, message: %s, headers:'
-                             ' %s, history: %s. Error getting upload URL',
+            logger.exception('Unable to upload file (error getting upload URL)'
+                             ' %s with content type %s to bucket %s. Status: '
+                             '%s, message: %s, headers: %s, history: %s',
                              file_to_upload, content_type, bucket_id,
                              aiohttp.ClientResponseError.status,
                              aiohttp.ClientResponseError.message,

@@ -91,9 +91,9 @@ async def test_upload_file(storage, bucket_id, file_to_upload, content_type,
                 VIDEOS_PATH, file_to_upload), content_type)
             assert result.get('contentLength') == expected
         except aiohttp.ClientResponseError:
-            logger.exception('Unable to upload file %s with content type %s '
-                             'to bucket %s. Status: %s, message: %s, headers:'
-                             ' %s, history: %s. Error uploading file',
+            logger.exception('Unable to upload file (error uploading file) %s'
+                             ' with content type %s to bucket %s. Status: %s,'
+                             'message: %s, headers: %s, history: %s',
                              file_to_upload, content_type, bucket_id,
                              aiohttp.ClientResponseError.status,
                              aiohttp.ClientResponseError.message,
