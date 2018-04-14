@@ -7,8 +7,8 @@ jobs:
     steps:
       - checkout
       - run: conda install python=3.6
-      - run: which conda
-      - run: which pip
-      - run: pip install "aiohttp<3.0,>=2.0"
+      - run: mkdir -p dist
+      - run: python setup.py sdist
+      - run: pip install "aiohttp<3.0,>=2.0" dist/aiostorage-0.1.2.tar.gz
       - run: pip install --requirement requirements-dev.txt
-      - run: cd aiostorage && pytest
+      - run: pytest
