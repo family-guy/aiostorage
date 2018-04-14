@@ -9,3 +9,5 @@ jobs:
       - run: conda install python=3.6
       - run: which conda
       - run: which pip
+      - run: pip install "aiohttp<3.0,>=2.0"
+      - run: pip install --requirement requirements-dev.txt
