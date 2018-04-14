@@ -11,3 +11,4 @@ jobs:
       - run: which pip
       - run: pip install "aiohttp<3.0,>=2.0"
       - run: pip install --requirement requirements-dev.txt
+      - run: pytest
