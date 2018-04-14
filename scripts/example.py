@@ -1,8 +1,14 @@
 import asyncio
+import logging
 import time
+
+import aiohttp
 
 import aiostorage.backblaze
 import aiostorage.settings
+
+
+logger = logging.getLogger(__name__)
 
 
 videos = (
@@ -29,9 +35,28 @@ i = 20
 async def upload_video(storage, video):
     start = time.time()
     print('{} Starting upload_video for {}...'.format('#' * i, video['path']))
-    await storage.authenticate()
+    try:
+        await storage.authenticate()
+    except aiohttp.ClientResponseError:
+        logger.exception('Unable to authenticate, please check credentials. '
+                         'Status: %s, message: %s, headers: %s, history: %s',
+                         aiohttp.ClientResponseError.status,
+                         aiohttp.ClientResponseError.message,
+                         aiohttp.ClientResponseError.headers,
+                         aiohttp.ClientResponseError.history)
     bucket_id = aiostorage.settings.BACKBLAZE_TEST_BUCKET_ID
-    await storage.upload_file(bucket_id, video['path'], video['content_type'])
+    try:
+        await storage.upload_file(
+            bucket_id, video['path'], video['content_type'])
+    except aiohttp.ClientResponseError:
+        logger.exception('Unable to upload file %s with content type %s '
+                         'to bucket %s. Status: %s, message: %s, headers:'
+                         ' %s, history: %s', video['path'],
+                         video['content_type'], bucket_id,
+                         aiohttp.ClientResponseError.status,
+                         aiohttp.ClientResponseError.message,
+                         aiohttp.ClientResponseError.headers,
+                         aiohttp.ClientResponseError.history)
     print('{} Uploaded {} in {}s'.format('#' * i, video['path'], time.time() - start))
 
 

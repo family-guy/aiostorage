@@ -1,11 +1,16 @@
+import logging
 import os
 
+import aiohttp
 import pytest
 
 from aiostorage.backblaze import Backblaze
 from aiostorage.settings import BACKBLAZE_APP_KEY
 from aiostorage.settings import BACKBLAZE_ACCOUNT_ID
 from aiostorage.settings import BACKBLAZE_TEST_BUCKET_ID
+
+
+logger = logging.getLogger(__name__)
 
 VIDEOS_PATH = 'tests/data/videos'
 
@@ -18,15 +23,40 @@ def storage():
 
 @pytest.mark.asyncio
 async def test_authenticate(storage):
-    result = await storage.authenticate()
-    assert {'apiUrl', 'authorizationToken'}.issubset(result)
+    try:
+        result = await storage.authenticate()
+        assert {'apiUrl', 'authorizationToken'}.issubset(result)
+    except aiohttp.ClientResponseError:
+        logger.exception('Unable to authenticate, please check credentials. '
+                         'Status: %s, message: %s, headers: %s, history: %s',
+                         aiohttp.ClientResponseError.status,
+                         aiohttp.ClientResponseError.message,
+                         aiohttp.ClientResponseError.headers,
+                         aiohttp.ClientResponseError.history)
 
 
 @pytest.mark.asyncio
 async def test__get_upload_url(storage):
-    await storage.authenticate()
-    result = await storage._get_upload_url(BACKBLAZE_TEST_BUCKET_ID)
-    assert {'uploadUrl', 'authorizationToken'}.issubset(result)
+    try:
+        await storage.authenticate()
+    except aiohttp.ClientResponseError:
+        logger.exception('Unable to authenticate, please check credentials. '
+                         'Status: %s, message: %s, headers: %s, history: %s',
+                         aiohttp.ClientResponseError.status,
+                         aiohttp.ClientResponseError.message,
+                         aiohttp.ClientResponseError.headers,
+                         aiohttp.ClientResponseError.history)
+    else:
+        try:
+            result = await storage._get_upload_url(BACKBLAZE_TEST_BUCKET_ID)
+            assert {'uploadUrl', 'authorizationToken'}.issubset(result)
+        except aiohttp.ClientResponseError:
+            logger.exception('Unable to get upload URL. Status: %s, message: '
+                             '%s, headers: %s, history: %s',
+                             aiohttp.ClientResponseError.status,
+                             aiohttp.ClientResponseError.message,
+                             aiohttp.ClientResponseError.headers,
+                             aiohttp.ClientResponseError.history)
 
 
 @pytest.mark.parametrize(
@@ -46,7 +76,26 @@ async def test__get_upload_url(storage):
 @pytest.mark.asyncio
 async def test_upload_file(storage, bucket_id, file_to_upload, content_type,
                            expected):
-    await storage.authenticate()
-    result = await storage.upload_file(bucket_id, os.path.join(
-        VIDEOS_PATH, file_to_upload), content_type)
-    assert result.get('contentLength') == expected
+    try:
+        await storage.authenticate()
+    except aiohttp.ClientResponseError:
+        logger.exception('Unable to authenticate, please check credentials. '
+                         'Status: %s, message: %s, headers: %s, history: %s',
+                         aiohttp.ClientResponseError.status,
+                         aiohttp.ClientResponseError.message,
+                         aiohttp.ClientResponseError.headers,
+                         aiohttp.ClientResponseError.history)
+    else:
+        try:
+            result = await storage.upload_file(bucket_id, os.path.join(
+                VIDEOS_PATH, file_to_upload), content_type)
+            assert result.get('contentLength') == expected
+        except aiohttp.ClientResponseError:
+            logger.exception('Unable to upload file %s with content type %s '
+                             'to bucket %s. Status: %s, message: %s, headers:'
+                             ' %s, history: %s. Error uploading file',
+                             file_to_upload, content_type, bucket_id,
+                             aiohttp.ClientResponseError.status,
+                             aiohttp.ClientResponseError.message,
+                             aiohttp.ClientResponseError.headers,
+                             aiohttp.ClientResponseError.history)

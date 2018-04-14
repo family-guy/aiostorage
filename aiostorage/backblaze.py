@@ -30,16 +30,16 @@ class Backblaze:
         self._authorization_token = None
         self._authorized_session = None
 
-    def _create_url(self, api_endpoint):
+    def _get_api_url(self, action):
         """
-        Create the full URL to an API endpoint.
+        Generate API endpoint URL.
 
-        :param str api_endpoint: The shortened form of the API endpoint.
-        :return: The full URL.
+        :param str action: API action to get URL for.
+        :return: API endpoint URL.
         :rtype: str
         """
         path = '{}{}{}'.format(self.API_NAME, self.API_VERSION,
-                               self.API_ENDPOINTS[api_endpoint])
+                               self.API_ENDPOINTS[action])
         if self._authorized_base_url is None:
             return urllib.parse.urljoin(self.API_DOMAIN, path)
         else:
@@ -47,60 +47,95 @@ class Backblaze:
 
     async def authenticate(self):
         """
-        Using the credentials provided when instantiating the class, retrieve
-        the base URL for subsequent API calls, as well as the authorization
-        token.
+        Authenticate to the API and update authorization attributes.
 
-        Create a HTTP session with the authorization token in the header.
-
-        Update class attributes.
-
-        :return: The JSON response from the Backblaze API.
+        :raise ClientResponseError: If HTTP status error code.
+        :return: JSON API response containing authorization details.
         :rtype: dict
         """
-        url = self._create_url('authorize_account')
+        url = self._get_api_url('authorize_account')
         auth = aiohttp.BasicAuth(self._account_id, self._app_key)
         async with aiohttp.ClientSession(auth=auth) as session:
             async with session.get(url, timeout=30) as response:
                 response.raise_for_status()
                 response_js = await response.json()
-                self._authorized_base_url = response_js.get('apiUrl')
-                self._authorization_token = response_js.get(
-                    'authorizationToken')
-                self._authorized_session = aiohttp.ClientSession(
-                    headers={'Authorization': self._authorization_token})
+                if ('apiUrl' in response_js and 'authorizationToken' in
+                        response_js):
+                    self._authorized_base_url = response_js['apiUrl']
+                    self._authorization_token = response_js['authorizationToken']  # noqa
+                    self._authorized_session = aiohttp.ClientSession(
+                        headers={'Authorization': self._authorization_token})
+                else:
+                    logger.exception('"apiUrl" or "authorizationToken" missing'
+                                     ' in API response')
+                    logger.debug('Keys: %s', ', '.join(response_js))
                 return response_js
 
     async def _get_upload_url(self, bucket_id):
-        url = self._create_url('get_upload_url')
-        async with self._authorized_session as session:
-            async with session.post(
-                    url, json={'bucketId': bucket_id}) as response:
-                response.raise_for_status()
-                response_js = await response.json()
-                return response_js
+        """
+        Retrieve URL used for uploading a file.
 
-    async def upload_file(self, bucket_id, file_to_upload, content_type):
-        try:
-            upload_details = await self._get_upload_url(bucket_id)
-        except aiohttp.ClientResponseError:
-            logger.exception('Unable to upload file')
+        :param bucket_id: bucket to upload file to.
+        :raise ClientResponseError: If HTTP status error code.
+        :return: JSON API response containing upload URL.
+        :rtype: dict
+        """
+        if self._authorized_session is None:
+            logger.exception('Unable to get upload url as unauthorized')
         else:
-            upload_url = upload_details.get('uploadUrl')
-            upload_token = upload_details.get('authorizationToken')
-            with open(file_to_upload, 'rb') as f:
-                file_data = f.read()
-            upload_headers = {
-                'Authorization': upload_token,
-                'X-Bz-File-Name': urllib.parse.quote(
-                    os.path.basename(file_to_upload)),
-                'Content-Type': content_type,
-                'X-Bz-Content-Sha1': hashlib.sha1(file_data).hexdigest()
-            }
-            async with aiohttp.ClientSession(
-                    headers=upload_headers) as session:
+            url = self._get_api_url('get_upload_url')
+            async with self._authorized_session as session:
                 async with session.post(
-                        upload_url, data=file_data) as response:
+                        url, json={'bucketId': bucket_id}) as response:
                     response.raise_for_status()
                     response_js = await response.json()
                     return response_js
+
+    async def upload_file(self, bucket_id, file_to_upload, content_type):
+        """
+        Upload file.
+
+        :param bucket_id: bucket to upload file to.
+        :param file_to_upload: path of file to upload.
+        :param content_type: content (MIME) type of file to upload.
+        :return: JSON API response containing confirmation of file upload.
+        :rtype: dict
+        """
+        try:
+            upload_info = await self._get_upload_url(bucket_id)
+        except aiohttp.ClientResponseError:
+            logger.exception('Unable to upload file %s with content type %s '
+                             'to bucket %s. Status: %s, message: %s, headers:'
+                             ' %s, history: %s. Error getting upload URL',
+                             file_to_upload, content_type, bucket_id,
+                             aiohttp.ClientResponseError.status,
+                             aiohttp.ClientResponseError.message,
+                             aiohttp.ClientResponseError.headers,
+                             aiohttp.ClientResponseError.history)
+        else:
+            if upload_info is None:
+                logger.exception('Unable to upload file')
+            elif ('uploadUrl' in upload_info and 'authorizationToken' in
+                  upload_info):
+                upload_url = upload_info['uploadUrl']
+                upload_token = upload_info['authorizationToken']
+                with open(file_to_upload, 'rb') as f:
+                    file_data = f.read()
+                upload_headers = {
+                    'Authorization': upload_token,
+                    'X-Bz-File-Name': urllib.parse.quote(
+                        os.path.basename(file_to_upload)),
+                    'Content-Type': content_type,
+                    'X-Bz-Content-Sha1': hashlib.sha1(file_data).hexdigest()
+                }
+                async with aiohttp.ClientSession(
+                        headers=upload_headers) as session:
+                    async with session.post(
+                            upload_url, data=file_data) as response:
+                        response.raise_for_status()
+                        response_js = await response.json()
+                        return response_js
+            else:
+                logger.exception('"uploadUrl" or "authorizationToken" missing '
+                                 'in API response')
+                logger.debug('Keys: %s', ', '.join(upload_info))
