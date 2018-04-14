@@ -6,4 +6,6 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: echo "hello"
+      - run: conda install python=3.6
+      - run: pip install aiohttp<3.0,>=2.0
+      - run: pip install --requirement requirements-dev.txt
