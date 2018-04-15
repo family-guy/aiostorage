@@ -1,10 +1,13 @@
+defaults: &defaults
+  docker:
+    - image: continuumio/miniconda3:latest
+  working_directory: ~/repo
+
 version: 2
 jobs:
 
   build:
-    docker:
-      - image: continuumio/miniconda3:latest
-    working_directory: ~/repo
+    <<: *defaults
     steps:
       - checkout
       - run: conda install python=3.6
@@ -16,9 +19,7 @@ jobs:
             - .
 
   test:
-    docker:
-      - image: continuumio/miniconda3:latest
-    working_directory: ~/repo
+    <<: *defaults
     steps:
       - checkout
       - attach_workspace:
