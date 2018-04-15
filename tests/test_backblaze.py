@@ -5,8 +5,8 @@ import aiohttp
 import pytest
 
 from aiostorage.backblaze import Backblaze
-from aiostorage.settings import BACKBLAZE_APP_KEY
 from aiostorage.settings import BACKBLAZE_ACCOUNT_ID
+from aiostorage.settings import BACKBLAZE_APP_KEY
 from aiostorage.settings import BACKBLAZE_TEST_BUCKET_ID
 
 
