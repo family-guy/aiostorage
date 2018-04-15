@@ -33,6 +33,7 @@ jobs:
   pypi:
     <<: *defaults
     steps:
+      - checkout
       - attach_workspace:
           at: dist
       - run: pip install --upgrade pip
