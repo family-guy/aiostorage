@@ -1,5 +1,6 @@
 version: 2
 jobs:
+
   build:
     docker:
       - image: continuumio/miniconda3:latest
@@ -7,8 +8,28 @@ jobs:
     steps:
       - checkout
       - run: conda install python=3.6
-      - run: mkdir -p dist
+      - run: ./build-scripts/create-envfile.sh
       - run: python setup.py sdist
-      - run: pip install "aiohttp<3.0,>=2.0" dist/aiostorage-0.1.2.tar.gz
-      - run: pip install --requirement requirements-dev.txt
+      - persist_to_workspace:
+          paths:
+            - dist
+
+  test:
+    docker:
+      - image: continuumio/miniconda3:latest
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: dist
+      - run: conda env update --name root --file dist/environment.yml
+      - run: pip install --requirement requirements-dev.txt dist/aiostorage-0.1.2.tar.gz
       - run: pytest
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
