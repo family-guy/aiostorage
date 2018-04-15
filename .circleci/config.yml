@@ -11,9 +11,9 @@ jobs:
       - run: ./build-scripts/create-envfile.sh
       - run: python setup.py sdist
       - persist_to_workspace:
-          root: .
+          root: dist
           paths:
-            - dist/*
+            - *
 
   test:
     docker:
