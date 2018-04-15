@@ -26,15 +26,30 @@ jobs:
           at: dist
       - run: conda env update --name root --file dist/environment.yml
       - run: pip install --upgrade pip
-      - run: pip install --requirement requirements-dev.txt dist/aiostorage-0.1.2.tar.gz
+      - run: pip install --requirement requirements-dev.txt dist/*.tar.gz
       - run: flake8
       - run: pytest
 
+  pypi:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: dist
+      - run: pip install --upgrade pip
+      - run: pip install twine
+      - run: ./build-scripts/upload-project.sh
+
 workflows:
   version: 2
-  build-test:
+  build-test-pypi:
     jobs:
       - build
       - test:
           requires:
             - build
+      - pypi:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
