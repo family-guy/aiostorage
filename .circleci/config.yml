@@ -27,6 +27,7 @@ jobs:
       - run: conda env update --name root --file dist/environment.yml
       - run: pip install --upgrade pip
       - run: pip install --requirement requirements-dev.txt dist/aiostorage-0.1.2.tar.gz
+      - run: flake8
       - run: pytest
 
 workflows:

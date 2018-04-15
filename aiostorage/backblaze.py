@@ -30,6 +30,7 @@ class Backblaze:
         self._authorization_token = None
         self._authorized_session = None
 
+
     def _get_api_url(self, action):
         """
         Generate API endpoint URL.
