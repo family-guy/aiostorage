@@ -1,3 +1,6 @@
-BACKBLAZE_APP_KEY='<backblaze-app-key>'
-BACKBLAZE_ACCOUNT_ID='<backblaze-account-id>'
-BACKBLAZE_TEST_BUCKET_ID = '<backblaze-test-bucket-id>'
+import os
+
+
+BACKBLAZE_APP_KEY = os.environ['BACKBLAZE_APP_KEY']
+BACKBLAZE_ACCOUNT_ID = os.environ['BACKBLAZE_ACCOUNT_ID']
+BACKBLAZE_TEST_BUCKET_ID = os.environ['BACKBLAZE_TEST_BUCKET_ID']
