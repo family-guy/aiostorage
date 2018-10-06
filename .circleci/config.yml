@@ -18,7 +18,7 @@ jobs:
           paths:
             - .
 
-  test:
+  unittest:
     <<: *defaults
     steps:
       - checkout
@@ -45,12 +45,12 @@ workflows:
   build-test-pypi:
     jobs:
       - build
-      - test:
+      - unittest:
           requires:
             - build
       - pypi:
           requires:
-            - test
+            - unittest
           filters:
             branches:
               only: master
