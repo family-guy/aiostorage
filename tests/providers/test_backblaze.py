@@ -4,21 +4,22 @@ import os
 import aiohttp
 import pytest
 
-from aiostorage.backblaze import Backblaze
-from aiostorage.settings import BACKBLAZE_ACCOUNT_ID
-from aiostorage.settings import BACKBLAZE_APP_KEY
-from aiostorage.settings import BACKBLAZE_TEST_BUCKET_ID
+from aiostorage.providers.backblaze import Backblaze
 
 
 logger = logging.getLogger(__name__)
 
 VIDEOS_PATH = 'tests/data/videos'
+BUCKET = os.environ['BACKBLAZE_TEST_BUCKET_ID']
 
 
 @pytest.fixture
 def storage():
-    return Backblaze(account_id=BACKBLAZE_ACCOUNT_ID,
-                     app_key=BACKBLAZE_APP_KEY)
+    credentials = {
+        'account_id': os.environ['BACKBLAZE_ACCOUNT_ID'],
+        'app_key': os.environ['BACKBLAZE_APP_KEY'],
+    }
+    return Backblaze(credentials)
 
 
 @pytest.mark.asyncio
@@ -48,7 +49,7 @@ async def test__get_upload_url(storage):
                          aiohttp.ClientResponseError.history)
     else:
         try:
-            result = await storage._get_upload_url(BACKBLAZE_TEST_BUCKET_ID)
+            result = await storage._get_upload_url(BUCKET)
             assert {'uploadUrl', 'authorizationToken'}.issubset(result)
         except aiohttp.ClientResponseError:
             logger.exception('Unable to get upload URL. Status: %s, message: '
@@ -62,14 +63,14 @@ async def test__get_upload_url(storage):
 @pytest.mark.parametrize(
     ('bucket_id', 'file_to_upload', 'content_type', 'expected'),
     (
-        (BACKBLAZE_TEST_BUCKET_ID,
+        (BUCKET,
          'Helene Fischer - Atemlos durch die Nacht.mp4', 'video/mp4', 1607175),
-        (BACKBLAZE_TEST_BUCKET_ID,
+        (BUCKET,
          'Luis Fonsi - Despacito ft Daddy Yankee.mp4', 'video/mp4', 3452397),
-        (BACKBLAZE_TEST_BUCKET_ID,
+        (BUCKET,
          'Rino Gaetano - Ma il cielo è sempre più blu.webm', 'video/webm',
          262276),
-        (BACKBLAZE_TEST_BUCKET_ID,
+        (BUCKET,
          'Stromae - Alors On Danse.webm', 'video/webm', 664295),
     )
 )

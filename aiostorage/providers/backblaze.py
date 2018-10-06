@@ -23,9 +23,9 @@ class Backblaze:
         'authorize_account': 'b2_authorize_account/',
     }
 
-    def __init__(self, account_id=None, app_key=None):
-        self._account_id = account_id
-        self._app_key = app_key
+    def __init__(self, credentials):
+        self._account_id = credentials['account_id']
+        self._app_key = credentials['app_key']
         self._authorized_base_url = None
         self._authorization_token = None
         self._authorized_session = None
