@@ -18,7 +18,7 @@ jobs:
           paths:
             - .
 
-  test:
+  unit-test:
     <<: *defaults
     steps:
       - checkout
@@ -45,7 +45,7 @@ workflows:
   build-test-pypi:
     jobs:
       - build
-      - test:
+      - unit-test:
           requires:
             - build
       - pypi:
