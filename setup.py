@@ -18,6 +18,7 @@ classifiers = [
 requirements = (
     'aiohttp>=2.0,<3.0',  # aiohttp>=3.0 requires python>=3.5.3 but readthedocs
     # runs on python3.5
+    'asynctest==0.12.2',
 )
 project_urls = {
     'Wiki': 'https://family-guy.github.io/aiostorage-wiki/',
@@ -38,7 +39,7 @@ setup(
     classifiers=classifiers,
 
     author='Guy King',
-    author_email='guy@zorncapital.com',
+    author_email='grking8@gmail.com',
     license='MIT',
     url='https://github.com/family-guy/aiostorage.git',
     project_urls=project_urls,

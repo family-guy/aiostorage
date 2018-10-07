@@ -1,5 +1,5 @@
 """
-Class for interacting with the Backblaze cloud storage REST API.
+Interface for communicating with the Backblaze B2 Cloud Storage API.
 """
 import hashlib
 import os
