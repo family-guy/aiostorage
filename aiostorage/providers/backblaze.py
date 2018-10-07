@@ -1,5 +1,6 @@
 """
-Interface for communicating with the Backblaze B2 Cloud Storage API.
+Interface for communicating asynchronously with the Backblaze B2 Cloud
+Storage API.
 """
 import hashlib
 import os

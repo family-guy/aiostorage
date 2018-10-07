@@ -23,13 +23,15 @@ def test_instance(storage):
 
 
 def test_instance_unrecognized_provider():
-    provider = 'Fake'
+    provider = 'fake'
     credentials = {
         'account_id': '23423',
         'app_key': 'sdfsdf',
     }
-    with pytest.raises(BlobStorageUnrecognizedProviderError):
+    with pytest.raises(BlobStorageUnrecognizedProviderError) as err:
         BlobStorage(provider, credentials)
+    assert ('Unrecognized object storage provider. Please select one of '
+            'backblaze') == str(err.value)
 
 
 def test_instance_bad_credentials():
