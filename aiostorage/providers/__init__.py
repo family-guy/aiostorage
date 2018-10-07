@@ -1,8 +1,8 @@
 from .backblaze import Backblaze
 from .exceptions import (BackblazeAuthenticationError,
-                         BackblazeGetUploadUrlError,
                          BackblazeAuthorizationError,
-                         BackblazeFileUploadError)
+                         BackblazeFileUploadError,
+                         BackblazeGetUploadUrlError, )
 
 
 PROVIDERS = ('backblaze', )

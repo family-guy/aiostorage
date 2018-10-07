@@ -25,7 +25,7 @@ class BackblazeGetUploadUrlError(BackblazeError):
 
 class BackblazeAuthorizationError(BackblazeError):
     """
-    Not authorised to perform the action requested.
+    Not authorised to perform the action.
     """
 
 

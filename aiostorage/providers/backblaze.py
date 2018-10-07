@@ -2,7 +2,6 @@
 Class for interacting with the Backblaze cloud storage REST API.
 """
 import hashlib
-import logging
 import os
 import urllib.parse
 
@@ -12,7 +11,6 @@ from .exceptions import BackblazeAuthorizationError, BackblazeGetUploadUrlError
 
 
 class Backblaze:
-
     API_NAME = 'b2api/'
     API_VERSION = 'v1/'
     API_DOMAIN = 'https://api.backblazeb2.com'
