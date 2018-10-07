@@ -9,7 +9,7 @@ from aiostorage.providers.backblaze import Backblaze
 
 logger = logging.getLogger(__name__)
 
-VIDEOS_PATH = 'tests/data/videos'
+VIDEOS_PATH = os.path.join('tests', 'data', 'videos')
 BUCKET = os.environ['BACKBLAZE_TEST_BUCKET_ID']
 
 
