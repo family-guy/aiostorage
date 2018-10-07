@@ -1,7 +1,7 @@
 import asyncio
 import logging
 
-from .exceptions import BlobStorageUnrecognisedProviderError
+from .exceptions import BlobStorageUnrecognizedProviderError
 from .providers import (Backblaze, BackblazeAuthenticationError, PROVIDERS,
                         BackblazeFileUploadError)
 
@@ -16,7 +16,7 @@ class BlobStorage:
 
     def __init__(self, provider, credentials):
         if provider not in PROVIDERS:
-            raise BlobStorageUnrecognisedProviderError
+            raise BlobStorageUnrecognizedProviderError
         self.provider = self.PROVIDER_ADAPTER[provider](credentials)
         self.loop = asyncio.get_event_loop()
 

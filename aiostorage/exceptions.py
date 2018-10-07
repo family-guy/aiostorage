@@ -7,7 +7,7 @@ class BlobStorageError(Exception):
     """
 
 
-class BlobStorageUnrecognisedProviderError(BlobStorageError):
+class BlobStorageUnrecognizedProviderError(BlobStorageError):
     """
     Unrecognised object storage provider.
     """

@@ -1,11 +1,11 @@
 from .backblaze import Backblaze
 from .exceptions import (BackblazeAuthenticationError,
                          BackblazeGetUploadUrlError,
-                         BackblazeAuthorisationError,
+                         BackblazeAuthorizationError,
                          BackblazeFileUploadError)
 
 
 PROVIDERS = ('backblaze', )
 __all__ = ['Backblaze', 'BackblazeAuthenticationError', 'PROVIDERS',
-           'BackblazeGetUploadUrlError', 'BackblazeAuthorisationError',
+           'BackblazeGetUploadUrlError', 'BackblazeAuthorizationError',
            'BackblazeFileUploadError']

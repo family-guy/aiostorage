@@ -8,10 +8,7 @@ import urllib.parse
 
 import aiohttp
 
-from .exceptions import BackblazeAuthorisationError, BackblazeGetUploadUrlError
-
-
-logger = logging.getLogger(__name__)
+from .exceptions import BackblazeAuthorizationError, BackblazeGetUploadUrlError
 
 
 class Backblaze:
@@ -26,11 +23,11 @@ class Backblaze:
     }
 
     def __init__(self, credentials):
-        self._account_id = credentials['account_id']
-        self._app_key = credentials['app_key']
-        self._authorized_base_url = None
-        self._authorization_token = None
-        self._authorized_session = None
+        self.account_id = credentials['account_id']
+        self.app_key = credentials['app_key']
+        self.authorized_base_url = None
+        self.authorization_token = None
+        self.authorized_session = None
 
     def _get_api_url(self, action):
         """
@@ -40,33 +37,32 @@ class Backblaze:
         :return: API endpoint URL.
         :rtype: str
         """
-        path = '{}{}{}'.format(self.API_NAME, self.API_VERSION,
-                               self.API_ENDPOINTS[action])
-        if self._authorized_base_url is None:
+        path = f'{self.API_NAME}{self.API_VERSION}{self.API_ENDPOINTS[action]}'
+        if self.authorized_base_url is None:
             return urllib.parse.urljoin(self.API_DOMAIN, path)
         else:
-            return urllib.parse.urljoin(self._authorized_base_url, path)
+            return urllib.parse.urljoin(self.authorized_base_url, path)
 
     async def authenticate(self):
         """
         Authenticate to the API and update authorization attributes.
 
-        :raise ClientResponseError: If HTTP status error code.
+        :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing authorization details.
         :rtype: dict
         """
         url = self._get_api_url('authorize_account')
-        auth = aiohttp.BasicAuth(self._account_id, self._app_key)
+        auth = aiohttp.BasicAuth(self.account_id, self.app_key)
         required = ('apiUrl', 'authorizationToken')
         async with aiohttp.ClientSession(auth=auth) as session:
             async with session.get(url, timeout=30) as response:
                 response.raise_for_status()
                 response_js = await response.json()
                 if all(r in response_js for r in required):
-                    self._authorized_base_url = response_js['apiUrl']
-                    self._authorization_token = response_js['authorizationToken']  # noqa
-                    self._authorized_session = aiohttp.ClientSession(
-                        headers={'Authorization': self._authorization_token})
+                    self.authorized_base_url = response_js['apiUrl']
+                    self.authorization_token = response_js['authorizationToken']  # noqa
+                    self.authorized_session = aiohttp.ClientSession(
+                        headers={'Authorization': self.authorization_token})
                     return response_js
 
     async def _get_upload_url(self, bucket_id):
@@ -74,15 +70,15 @@ class Backblaze:
         Retrieve URL used for uploading a file.
 
         :param bucket_id: bucket to upload file to.
-        :raise ClientResponseError: If HTTP status error code.
+        :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing upload URL.
         :rtype: dict
         """
-        if self._authorized_session is None:
-            raise BackblazeAuthorisationError
+        if self.authorized_session is None:
+            raise BackblazeAuthorizationError
         url = self._get_api_url('get_upload_url')
         required = ('uploadUrl', 'authorizationToken')
-        async with self._authorized_session as session:
+        async with self.authorized_session as session:
             async with session.post(
                     url, json={'bucketId': bucket_id}) as response:
                 response.raise_for_status()
