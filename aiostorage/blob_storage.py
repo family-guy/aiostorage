@@ -36,5 +36,5 @@ class BlobStorage:
                 future = asyncio.ensure_future(
                     self._upload_file(bucket_id, file_to_upload))
                 futures.append(future)
-            return await asyncio.wait(futures)
+            return await asyncio.gather(*futures)
         return self.loop.run_until_complete(_upload_files())

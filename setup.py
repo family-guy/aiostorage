@@ -18,7 +18,6 @@ classifiers = [
 requirements = (
     'aiohttp>=2.0,<3.0',  # aiohttp>=3.0 requires python>=3.5.3 but readthedocs
     # runs on python3.5
-    'asynctest==0.12.2',
 )
 project_urls = {
     'Wiki': 'https://family-guy.github.io/aiostorage-wiki/',

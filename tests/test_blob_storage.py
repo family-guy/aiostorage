@@ -137,3 +137,23 @@ async def test__upload_file_upload_file_error(
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
     with pytest.raises(BackblazeFileUploadError):
         await storage._upload_file(bucket_id, file_to_upload)
+
+
+def test_upload_files(storage, mock_provider_authenticate,
+                      mock_provider_upload_file):
+    bucket_id = '3432'
+    files_to_upload = (
+        {'content_type': 'video/mp4', 'path': 'hello.mp4'},
+        {'content_type': 'audio/mp3', 'path': 'bye.mp3'},
+        {'content_type': 'application/pdf', 'path': 'doc.pdf'},
+    )
+    fake_results = [
+        {
+            'fileUploaded': file_to_upload['path'],
+            'fileId': 234234,
+            'fileBucketId': bucket_id,
+            'fileContentType': file_to_upload['content_type']
+        }
+        for file_to_upload in files_to_upload
+    ]
+    assert storage.upload_files(bucket_id, files_to_upload) == fake_results
