@@ -1,11 +1,11 @@
 import asynctest
 import pytest
 
-from aiostorage.blob_storage import BlobStorage
-from aiostorage.exceptions import BlobStorageUnrecognizedProviderError
-from aiostorage.providers.backblaze import Backblaze
-from aiostorage.providers.exceptions import (BackblazeAuthenticationError,
-                                             BackblazeFileUploadError)
+from aiostorage import BlobStorage
+from aiostorage import BlobStorageUnrecognizedProviderError
+from aiostorage.providers import Backblaze
+from aiostorage.providers import (BackblazeAuthenticationError,
+                                  BackblazeFileUploadError)
 
 
 @pytest.fixture

@@ -16,11 +16,11 @@ videos = [
         'content_type': content_type
     } for video_file in video_files
 ]
-
 provider = 'backblaze'
 credentials = {
     'account_id': os.environ['BACKBLAZE_ACCOUNT_ID'],
     'app_key': os.environ['BACKBLAZE_APP_KEY'],
 }
+bucket = os.environ['BACKBLAZE_TEST_BUCKET_ID']
 storage = aiostorage.BlobStorage(provider, credentials)
-storage.upload_files(os.environ['BACKBLAZE_TEST_BUCKET_ID'], videos)
+storage.upload_files(bucket, videos)
