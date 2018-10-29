@@ -1,8 +1,8 @@
 import asyncio
 
 from .exceptions import BlobStorageUnrecognizedProviderError
-from .providers import (Backblaze, BackblazeAuthenticationError,
-                        BackblazeFileUploadError, PROVIDERS, )
+from .providers import (Backblaze, ProviderAuthenticationError,
+                        ProviderFileUploadError, PROVIDERS, )
 
 
 class BlobStorage:
@@ -25,11 +25,11 @@ class BlobStorage:
     async def _upload_file(self, bucket_id, file_to_upload):
         auth_response = await self.provider.authenticate()
         if not auth_response:
-            raise BackblazeAuthenticationError
+            raise ProviderAuthenticationError
         upload_file_response = await self.provider.upload_file(
             bucket_id, file_to_upload['path'], file_to_upload['content_type'])
         if not upload_file_response:
-            raise BackblazeFileUploadError
+            raise ProviderFileUploadError
         return upload_file_response
 
     def upload_files(self, bucket_id, files_to_upload):

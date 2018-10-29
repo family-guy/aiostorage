@@ -4,8 +4,8 @@ import pytest
 from aiostorage import BlobStorage
 from aiostorage import BlobStorageUnrecognizedProviderError
 from aiostorage.providers import Backblaze
-from aiostorage.providers import (BackblazeAuthenticationError,
-                                  BackblazeFileUploadError)
+from aiostorage.providers import (ProviderAuthenticationError,
+                                  ProviderFileUploadError)
 
 
 @pytest.fixture
@@ -109,7 +109,7 @@ async def test__upload_file_authentication_error(
 ):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
-    with pytest.raises(BackblazeAuthenticationError):
+    with pytest.raises(ProviderAuthenticationError):
         await storage._upload_file(bucket_id, file_to_upload)
 
 
@@ -137,7 +137,7 @@ async def test__upload_file_upload_file_error(
 ):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
-    with pytest.raises(BackblazeFileUploadError):
+    with pytest.raises(ProviderFileUploadError):
         await storage._upload_file(bucket_id, file_to_upload)
 
 

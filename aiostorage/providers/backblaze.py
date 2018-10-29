@@ -8,7 +8,7 @@ import urllib.parse
 
 import aiohttp
 
-from .exceptions import BackblazeAuthorizationError, BackblazeGetUploadUrlError
+from .exceptions import ProviderAuthorizationError, ProviderGetUploadUrlError
 
 
 class Backblaze:
@@ -74,7 +74,7 @@ class Backblaze:
         :rtype: dict
         """
         if self.authorized_session is None:
-            raise BackblazeAuthorizationError
+            raise ProviderAuthorizationError
         url = self._get_api_url('get_upload_url')
         required = ('uploadUrl', 'authorizationToken')
         async with self.authorized_session as session:
@@ -97,7 +97,7 @@ class Backblaze:
         """
         upload_info = await self._get_upload_url(bucket_id)
         if not upload_info:
-            raise BackblazeGetUploadUrlError
+            raise ProviderGetUploadUrlError
         upload_url = upload_info['uploadUrl']
         upload_token = upload_info['authorizationToken']
         with open(file_to_upload, 'rb') as f:

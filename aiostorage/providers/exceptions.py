@@ -11,25 +11,25 @@ class BackblazeError(ProviderError):
     """
 
 
-class BackblazeAuthenticationError(BackblazeError):
+class ProviderAuthenticationError(ProviderError):
     """
     Unable to authenticate.
     """
 
 
-class BackblazeGetUploadUrlError(BackblazeError):
+class ProviderGetUploadUrlError(ProviderError):
     """
     Unable to get URL for uploading a file to.
     """
 
 
-class BackblazeAuthorizationError(BackblazeError):
+class ProviderAuthorizationError(ProviderError):
     """
     Not authorised to perform the action.
     """
 
 
-class BackblazeFileUploadError(BackblazeError):
+class ProviderFileUploadError(ProviderError):
     """
     Unable to upload file.
     """
