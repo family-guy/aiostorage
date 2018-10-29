@@ -7,16 +7,19 @@ from .providers import (Backblaze, BackblazeAuthenticationError,
 
 class BlobStorage:
     PROVIDER_ADAPTER = {
-        'backblaze': Backblaze,
+        'backblaze': {
+            'adapter': Backblaze,
+            'required': ('account_id', 'app_key'),
+        }
     }
 
     def __init__(self, provider, credentials):
         if provider not in PROVIDERS:
             raise BlobStorageUnrecognizedProviderError
-        required = ('account_id', 'app_key')
-        if not all(r in credentials.keys() for r in required):
+        if not all(r in credentials.keys()
+                   for r in self.PROVIDER_ADAPTER[provider]['required']):
             raise KeyError
-        self.provider = self.PROVIDER_ADAPTER[provider](credentials)
+        self.provider = self.PROVIDER_ADAPTER[provider]['adapter'](credentials)
         self.loop = asyncio.get_event_loop()
 
     async def _upload_file(self, bucket_id, file_to_upload):
