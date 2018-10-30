@@ -2,7 +2,7 @@
 
 set -e
 
-PYPI_CONFIG="~/.pypirc"
+PYPI_CONFIG="${HOME}/.pypirc"
 echo $'[distutils]\nindex-servers = pypi\n[pypi]' > $PYPI_CONFIG
 echo "username=$PYPI_USERNAME" >> $PYPI_CONFIG
 echo "password=$PYPI_PASSWORD" >> $PYPI_CONFIG
