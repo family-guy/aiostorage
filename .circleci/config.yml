@@ -68,7 +68,7 @@ workflows:
               only: master
       - pypi:
           requires:
-            - unit-test
+            - api-test
           filters:
             branches:
               only: master
