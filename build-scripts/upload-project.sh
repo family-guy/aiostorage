@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-echo "[distutils]" >> ~/.pypirc
-echo "index-servers = pypi" >> ~/.pypirc
-echo "[pypi]" >> ~/.pypirc
-echo "username=$PYPI_USERNAME" >> ~/.pypirc
-echo "password=$PYPI_PASSWORD" >> ~/.pypirc
+set -e
 
+PYPI="~/.pypirc"
+echo $'[distutils]\nindex-servers = pypi\n[pypi]' > $PYPI
+echo "username=$PYPI_USERNAME" >> $PYPI
+echo "password=$PYPI_PASSWORD" >> $PYPI
 twine upload dist/*.tar.gz
