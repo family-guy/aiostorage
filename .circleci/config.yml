@@ -34,7 +34,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - attach_workspace
+      - attach_workspace:
           at: dist
       - run: conda env update --name root --file dist/environment.yml
       - run: pip install --upgrade pip
