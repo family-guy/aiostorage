@@ -12,5 +12,5 @@ class BlobStorageUnrecognizedProviderError(BlobStorageError):
     Unrecognized object storage provider.
     """
     def __str__(self):
-        return (f'Unrecognized object storage provider. Please select one of'
+        return ('Unrecognized object storage provider. Please select one of'
                 f' {", ".join(PROVIDERS)}')

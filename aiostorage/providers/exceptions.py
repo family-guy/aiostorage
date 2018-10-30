@@ -5,12 +5,6 @@ class ProviderError(Exception):
     """
 
 
-class BackblazeError(ProviderError):
-    """
-    Exceptions that occur whilst contacting the Backblaze B2 Cloud Storage API.
-    """
-
-
 class ProviderAuthenticationError(ProviderError):
     """
     Unable to authenticate.

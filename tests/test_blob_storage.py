@@ -1,11 +1,9 @@
 import asynctest
 import pytest
 
-from aiostorage import BlobStorage
-from aiostorage import BlobStorageUnrecognizedProviderError
-from aiostorage.providers import Backblaze
-from aiostorage.providers import (ProviderAuthenticationError,
-                                  ProviderFileUploadError)
+from aiostorage import BlobStorage, BlobStorageUnrecognizedProviderError
+from aiostorage.providers import (Backblaze, ProviderAuthenticationError,
+                                  ProviderFileUploadError, PROVIDERS)
 
 
 @pytest.fixture
@@ -22,7 +20,7 @@ def test_instance(storage):
     assert storage.provider
 
 
-def test_instance_unrecognized_provider():
+def test_unrecognized_provider():
     provider = 'fake'
     credentials = {
         'account_id': '23423',
@@ -30,11 +28,11 @@ def test_instance_unrecognized_provider():
     }
     with pytest.raises(BlobStorageUnrecognizedProviderError) as err:
         BlobStorage(provider, credentials)
-    assert ('Unrecognized object storage provider. Please select one of '
-            'backblaze') == str(err.value)
+    assert ('Unrecognized object storage provider. Please select one of'
+            f' {", ".join(PROVIDERS)}') == str(err.value)
 
 
-def test_instance_bad_credentials():
+def test_bad_credentials():
     provider = 'backblaze'
     credentials = {
         'accountId': '23423',
