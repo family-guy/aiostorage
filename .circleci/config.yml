@@ -18,7 +18,7 @@ jobs:
           paths:
             - .
 
-  test:
+  unit-test:
     <<: *defaults
     steps:
       - checkout
@@ -29,6 +29,18 @@ jobs:
       - run: pip install --requirement requirements-dev.txt dist/*.tar.gz
       - run: flake8
       - run: pytest
+
+  api-test:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: dist
+      - run: conda env update --name root --file dist/environment.yml
+      - run: pip install --upgrade pip
+      - run: pip install --requirement requirements-dev.txt dist/*.tar.gz
+      - run: echo $'[pytest]\naddopts = -vv -k tests/providers/apis' > custom.ini
+      - run: pytest -c custom.ini
 
   pypi:
     <<: *defaults
@@ -45,12 +57,18 @@ workflows:
   build-test-pypi:
     jobs:
       - build
-      - test:
+      - unit-test:
           requires:
             - build
+      - api-test:
+          requires:
+            - unit-test
+          filters:
+            branches:
+              only: master
       - pypi:
           requires:
-            - test
+            - api-test
           filters:
             branches:
               only: master

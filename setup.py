@@ -7,7 +7,7 @@ long_description = (
     'asynchronously. The aim is to support multiple object storage '
     'providers, e.g. Google Cloud, Backblaze, etc.'
 )
-version = '0.1.3'
+version = '0.1.4'
 classifiers = [
     'Development Status :: 1 - Planning',
 
@@ -38,7 +38,7 @@ setup(
     classifiers=classifiers,
 
     author='Guy King',
-    author_email='guy@zorncapital.com',
+    author_email='grking8@gmail.com',
     license='MIT',
     url='https://github.com/family-guy/aiostorage.git',
     project_urls=project_urls,
