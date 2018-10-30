@@ -23,6 +23,7 @@ def backblaze_storage():
          'https://xyz.com/b2api/v1/b2_list_buckets/'),
     )
 )
-def test__get_api_url(backblaze_storage, action, authorized_base_url, expected):
+def test__get_api_url(backblaze_storage, action, authorized_base_url,
+                      expected):
     backblaze_storage.authorized_base_url = authorized_base_url
     assert backblaze_storage._get_api_url(action) == expected
