@@ -1,9 +1,13 @@
+"""
+Exceptions for `BlobStorage` class.
+"""
+
 from .providers import PROVIDERS
 
 
 class BlobStorageError(Exception):
     """
-    Base exception class for `BlobStorage`.
+    Base exception class.
     """
 
 

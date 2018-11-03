@@ -1,6 +1,5 @@
 """
-Interface for communicating asynchronously with the Backblaze B2 Cloud
-Storage API.
+Class for communicating asynchronously with the Backblaze B2 Cloud Storage API.
 """
 import hashlib
 import os
@@ -22,6 +21,15 @@ class Backblaze:
     }
 
     def __init__(self, credentials):
+        """
+        Set credentials.
+
+        :param dict credentials: Credentials for communicating with the API,
+               `{'account_id': str, 'app_key': str}`.
+
+        .. automethod:: _get_api_url
+        .. automethod:: _get_upload_url
+        """
         self.account_id = credentials['account_id']
         self.app_key = credentials['app_key']
         self.authorized_base_url = None
@@ -34,7 +42,7 @@ class Backblaze:
 
         :param str action: API action to get URL for.
         :return: API endpoint URL.
-        :rtype: str
+        :rtype: `str`
         """
         path = f'{self.API_NAME}{self.API_VERSION}{self.API_ENDPOINTS[action]}'
         if self.authorized_base_url is None:
@@ -48,7 +56,7 @@ class Backblaze:
 
         :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing authorization details.
-        :rtype: dict
+        :rtype: `dict`
         """
         url = self._get_api_url('authorize_account')
         auth = aiohttp.BasicAuth(self.account_id, self.app_key)
@@ -68,10 +76,10 @@ class Backblaze:
         """
         Retrieve URL used for uploading a file.
 
-        :param bucket_id: bucket to upload file to.
+        :param str bucket_id: Bucket to upload file to.
         :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing upload URL.
-        :rtype: dict
+        :rtype: `dict`
         """
         if self.authorized_session is None:
             raise ProviderAuthorizationError
@@ -89,11 +97,11 @@ class Backblaze:
         """
         Upload file.
 
-        :param bucket_id: bucket to upload file to.
-        :param file_to_upload: path of file to upload.
-        :param content_type: content (MIME) type of file to upload.
+        :param str bucket_id: Bucket to upload file to.
+        :param str file_to_upload: Path of file to upload.
+        :param str content_type: Content (MIME) type of file to upload.
         :return: JSON API response containing confirmation of file upload.
-        :rtype: dict
+        :rtype: `dict`
         """
         upload_info = await self._get_upload_url(bucket_id)
         if not upload_info:

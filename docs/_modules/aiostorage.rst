@@ -1,21 +1,30 @@
 aiostorage package
 ==================
 
+aiostorage is a Python library for 
+
+Subpackages
+-----------
+
+.. toctree::
+
+    aiostorage.providers
+
 Submodules
 ----------
 
-aiostorage.backblaze module
----------------------------
+aiostorage.blob\_storage module
+-------------------------------
 
-.. automodule:: aiostorage.backblaze
+.. automodule:: aiostorage.blob_storage
     :members:
     :undoc-members:
     :show-inheritance:
 
-aiostorage.settings module
---------------------------
+aiostorage.exceptions module
+----------------------------
 
-.. automodule:: aiostorage.settings
+.. automodule:: aiostorage.exceptions
     :members:
     :undoc-members:
     :show-inheritance:

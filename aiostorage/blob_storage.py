@@ -1,3 +1,6 @@
+"""
+Contains a single class `BlobStorage`.
+"""
 import asyncio
 
 from .exceptions import BlobStorageUnrecognizedProviderError
@@ -6,6 +9,12 @@ from .providers import (Backblaze, ProviderAuthenticationError,
 
 
 class BlobStorage:
+    """
+    Asynchronous object storage interface for common object storage operations,
+    e.g. uploading a file to a bucket.
+    Object storage providers currently supported:
+    Backblaze
+    """
     PROVIDER_ADAPTER = {
         'backblaze': {
             'adapter': Backblaze,
@@ -14,15 +23,38 @@ class BlobStorage:
     }
 
     def __init__(self, provider, credentials):
+        """
+        Set the object storage provider and the event loop.
+
+        :param str provider: Name of the object storage provider, e.g.
+               `backblaze`.
+        :param dict credentials: Credentials for communicating with the object
+               storage provider (see `PROVIDER_ADAPTER`).
+
+        .. automethod:: _upload_file
+        """
         if provider not in PROVIDERS:
             raise BlobStorageUnrecognizedProviderError
-        if not all(r in credentials.keys()
+        if not all(r in credentials
                    for r in self.PROVIDER_ADAPTER[provider]['required']):
             raise KeyError
         self.provider = self.PROVIDER_ADAPTER[provider]['adapter'](credentials)
         self.loop = asyncio.get_event_loop()
 
     async def _upload_file(self, bucket_id, file_to_upload):
+        """
+        Upload a single file to the object storage provider.
+
+        :param str bucket_id: Object storage bucket to upload files to.
+        :param dict file_to_upload: Details of the file to upload to object
+               storage, `{'path': str, 'content_type': str}`.
+        :raise ProviderAuthenticationError: If authentication to the object
+               storage provider is unsuccessful.
+        :raise ProviderFileUploadError: If file upload to the object storage
+               provider is unsuccessful.
+        :return: Response from object storage provider after uploading file.
+        :rtype: `dict`
+        """
         auth_response = await self.provider.authenticate()
         if not auth_response:
             raise ProviderAuthenticationError
@@ -33,6 +65,15 @@ class BlobStorage:
         return upload_file_response
 
     def upload_files(self, bucket_id, files_to_upload):
+        """
+        Upload files to object storage provider.
+
+        :param str bucket_id: Object storage bucket to upload files to.
+        :param list files_to_upload: Details of files to upload to object
+               storage provider (see `file_to_upload` in `_upload_file`).
+        :return: Some value
+        :rtype: `dict`
+        """
         async def _upload_files():
             futures = []
             for file_to_upload in files_to_upload:
