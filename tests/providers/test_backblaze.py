@@ -9,7 +9,7 @@ def backblaze_storage():
         'account_id': '23424',
         'app_key': 'sdfsdfs',
     }
-    return Backblaze(credentials)
+    return Backblaze(**credentials)
 
 
 @pytest.mark.parametrize(

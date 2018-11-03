@@ -24,22 +24,29 @@ class BlobStorage:
         }
     }
 
-    def __init__(self, provider, credentials):
-        """
+    def __init__(self, provider, **kwargs):
+        r"""
         Set the object storage provider and the event loop.
 
         :param str provider: Name of the object storage provider. Must be one
                of `'backblaze'`.
-        :param dict credentials: Credentials for the object storage provider.
+        :param \**kwargs: Credentials for the object storage provider, see
+               below.
+
+        : Keyword arguments:
+            * *account_id* (``str``) --
+              Account id (Backblaze).
+            * *app_key* (``str``) --
+              Application key (Backblaze).
 
         .. automethod:: _upload_file
         """
         if provider not in PROVIDERS:
             raise BlobStorageUnrecognizedProviderError
-        if not all(r in credentials
+        if not all(r in kwargs
                    for r in self.PROVIDER_ADAPTER[provider]['required']):
             raise KeyError
-        self.provider = self.PROVIDER_ADAPTER[provider]['adapter'](credentials)
+        self.provider = self.PROVIDER_ADAPTER[provider]['adapter'](**kwargs)
         self.loop = asyncio.get_event_loop()
 
     async def _upload_file(self, bucket_id, file_to_upload):
