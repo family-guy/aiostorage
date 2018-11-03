@@ -1,5 +1,5 @@
 """
-Exceptions for errors whilst communicating with an object storage provider.
+Exceptions for errors whilst contacting an object storage provider API.
 """
 
 
