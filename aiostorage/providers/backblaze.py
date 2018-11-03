@@ -11,7 +11,7 @@ from .exceptions import ProviderAuthorizationError, ProviderGetUploadUrlError
 
 
 class Backblaze:
-    r"""
+    """
     Asynchronous wrapper around the Backblaze B2 Cloud Storage API.
     """
     API_NAME = 'b2api/'
@@ -24,7 +24,7 @@ class Backblaze:
     }
 
     def __init__(self, **kwargs):
-        """
+        r"""
         Set credentials.
 
         :param \**kwargs: API credentials, see below.
