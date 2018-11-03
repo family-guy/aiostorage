@@ -1,8 +1,6 @@
 aiostorage package
 ==================
 
-aiostorage is a Python library for 
-
 Subpackages
 -----------
 

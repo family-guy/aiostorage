@@ -1,5 +1,5 @@
 """
-hello harry
+API for public consumption.
 """
 from .blob_storage import BlobStorage
 from .exceptions import BlobStorageUnrecognizedProviderError

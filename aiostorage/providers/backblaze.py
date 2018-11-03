@@ -1,5 +1,5 @@
 """
-Class for communicating asynchronously with the Backblaze B2 Cloud Storage API.
+`Backblaze` class.
 """
 import hashlib
 import os
@@ -11,6 +11,9 @@ from .exceptions import ProviderAuthorizationError, ProviderGetUploadUrlError
 
 
 class Backblaze:
+    """
+    Asynchronous wrapper around the Backblaze B2 Cloud Storage API.
+    """
     API_NAME = 'b2api/'
     API_VERSION = 'v1/'
     API_DOMAIN = 'https://api.backblazeb2.com'
@@ -24,7 +27,7 @@ class Backblaze:
         """
         Set credentials.
 
-        :param dict credentials: Credentials for communicating with the API,
+        :param dict credentials: API Credentials,
                `{'account_id': str, 'app_key': str}`.
 
         .. automethod:: _get_api_url
@@ -74,7 +77,7 @@ class Backblaze:
 
     async def _get_upload_url(self, bucket_id):
         """
-        Retrieve URL used for uploading a file.
+        Retrieve URL used to upload a file.
 
         :param str bucket_id: Bucket to upload file to.
         :raise ClientResponseError: If HTTP status code >= 400.
