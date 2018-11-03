@@ -5,7 +5,7 @@ Exceptions for errors whilst contacting an object storage provider API.
 
 class ProviderError(Exception):
     """
-    Base exception class for object storage provider errors.
+    Base exception class.
     """
 
 

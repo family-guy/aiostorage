@@ -6,7 +6,7 @@ from .providers import PROVIDERS
 
 class BlobStorageError(Exception):
     """
-    Base exception class for `BlobStorage` errors.
+    Base exception class.
     """
 
 
