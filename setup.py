@@ -7,7 +7,7 @@ long_description = (
     'asynchronously. The aim is to support multiple object storage '
     'providers, e.g. Google Cloud, Backblaze, etc.'
 )
-version = '0.1.7'
+version = '0.1.8'
 classifiers = [
     'Development Status :: 1 - Planning',
 

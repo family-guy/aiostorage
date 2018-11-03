@@ -14,7 +14,7 @@ def storage():
         'account_id': os.environ['BACKBLAZE_ACCOUNT_ID'],
         'app_key': os.environ['BACKBLAZE_APP_KEY'],
     }
-    return Backblaze(credentials)
+    return Backblaze(**credentials)
 
 
 @pytest.mark.asyncio
