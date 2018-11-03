@@ -22,5 +22,5 @@ credentials = {
     'app_key': os.environ['BACKBLAZE_APP_KEY'],
 }
 bucket = os.environ['BACKBLAZE_TEST_BUCKET_ID']
-storage = aiostorage.BlobStorage(provider, credentials)
+storage = aiostorage.BlobStorage(provider, **credentials)
 storage.upload_files(bucket, videos)
