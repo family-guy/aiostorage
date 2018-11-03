@@ -1,7 +1,11 @@
+"""
+Exceptions for errors whilst contacting an object storage provider API.
+"""
+
+
 class ProviderError(Exception):
     """
-    Exceptions that occur whilst contacting an external storage provider's
-    API.
+    Base exception class.
     """
 
 
@@ -13,13 +17,13 @@ class ProviderAuthenticationError(ProviderError):
 
 class ProviderGetUploadUrlError(ProviderError):
     """
-    Unable to get URL for uploading a file to.
+    Unable to get file upload URL.
     """
 
 
 class ProviderAuthorizationError(ProviderError):
     """
-    Not authorised to perform the action.
+    Unable to perform action due to lack of authorization.
     """
 
 

@@ -1,3 +1,8 @@
+"""
+Asynchronous wrappers around object storage provider APIs.
+
+For internal usage only.
+"""
 from .backblaze import Backblaze
 from .exceptions import (ProviderAuthenticationError,
                          ProviderAuthorizationError,

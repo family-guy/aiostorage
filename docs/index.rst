@@ -10,7 +10,13 @@ Welcome to aiostorage's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+This site contains all code-related documentation for the Python library
+`aiostorage`.
 
+It should help those writing new and / or modifying existing code.
+
+It can also be used as an API reference for users of the library. For a more
+high-level overview or quickstart guide, see here.
 
 Indices and tables
 ==================
