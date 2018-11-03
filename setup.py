@@ -7,7 +7,7 @@ long_description = (
     'asynchronously. The aim is to support multiple object storage '
     'providers, e.g. Google Cloud, Backblaze, etc.'
 )
-version = '0.1.6'
+version = '0.1.7'
 classifiers = [
     'Development Status :: 1 - Planning',
 
@@ -16,8 +16,7 @@ classifiers = [
     'Programming Language :: Python :: 3.6',
 ]
 requirements = (
-    'aiohttp>=2.0,<3.0',  # aiohttp>=3.0 requires python>=3.5.3 but readthedocs
-    # runs on python3.5
+    'aiohttp>=3.0,<4.0',
 )
 project_urls = {
     'Wiki': 'https://family-guy.github.io/aiostorage-wiki/',
