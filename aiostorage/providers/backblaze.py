@@ -11,7 +11,7 @@ from .exceptions import ProviderAuthorizationError, ProviderGetUploadUrlError
 
 
 class Backblaze:
-    """
+    r"""
     Asynchronous wrapper around the Backblaze B2 Cloud Storage API.
     """
     API_NAME = 'b2api/'
@@ -23,18 +23,23 @@ class Backblaze:
         'authorize_account': 'b2_authorize_account/',
     }
 
-    def __init__(self, credentials):
+    def __init__(self, **kwargs):
         """
         Set credentials.
 
-        :param dict credentials: API Credentials,
-               `{'account_id': str, 'app_key': str}`.
+        :param \**kwargs: API credentials, see below.
+
+        : Keyword arguments
+            * *account_id* (``str``) --
+              Account id.
+            * *app_key* (``str``) --
+              Application key.
 
         .. automethod:: _get_api_url
         .. automethod:: _get_upload_url
         """
-        self.account_id = credentials['account_id']
-        self.app_key = credentials['app_key']
+        self.account_id = kwargs['account_id']
+        self.app_key = kwargs['app_key']
         self.authorized_base_url = None
         self.authorization_token = None
         self.authorized_session = None

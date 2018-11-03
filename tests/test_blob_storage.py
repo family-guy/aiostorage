@@ -13,7 +13,7 @@ def storage():
         'account_id': '23424',
         'app_key': 'sdfsdfs',
     }
-    return BlobStorage(provider, credentials)
+    return BlobStorage(provider, **credentials)
 
 
 def test_instance(storage):
@@ -27,7 +27,7 @@ def test_unrecognized_provider():
         'app_key': 'sdfsdf',
     }
     with pytest.raises(BlobStorageUnrecognizedProviderError) as err:
-        BlobStorage(provider, credentials)
+        BlobStorage(provider, **credentials)
     assert ('Unrecognized object storage provider. Please select one of'
             f' {", ".join(PROVIDERS)}') == str(err.value)
 
@@ -39,7 +39,7 @@ def test_bad_credentials():
         'appKey': 'sdfsdf',
     }
     with pytest.raises(KeyError):
-        BlobStorage(provider, credentials)
+        BlobStorage(provider, **credentials)
 
 
 def fake_provider_authenticate_side_effect():
