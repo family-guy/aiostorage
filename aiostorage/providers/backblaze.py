@@ -50,7 +50,7 @@ class Backblaze:
 
         :param str action: API action to get URL for.
         :return: API endpoint URL.
-        :rtype: `str`
+        :rtype: ``str``
         """
         path = f'{self.API_NAME}{self.API_VERSION}{self.API_ENDPOINTS[action]}'
         if self.authorized_base_url is None:
@@ -64,7 +64,7 @@ class Backblaze:
 
         :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing authorization details.
-        :rtype: `dict`
+        :rtype: ``dict``
         """
         url = self._get_api_url('authorize_account')
         auth = aiohttp.BasicAuth(self.account_id, self.app_key)
@@ -87,7 +87,7 @@ class Backblaze:
         :param str bucket_id: Bucket to upload file to.
         :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing upload URL.
-        :rtype: `dict`
+        :rtype: ``dict``
         """
         if self.authorized_session is None:
             raise ProviderAuthorizationError
@@ -109,7 +109,7 @@ class Backblaze:
         :param str file_to_upload: Path of file to upload.
         :param str content_type: Content (MIME) type of file to upload.
         :return: JSON API response containing confirmation of file upload.
-        :rtype: `dict`
+        :rtype: ``dict``
         """
         upload_info = await self._get_upload_url(bucket_id)
         if not upload_info:
