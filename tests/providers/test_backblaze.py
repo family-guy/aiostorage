@@ -4,7 +4,7 @@ from aiostorage.providers import Backblaze
 
 
 @pytest.fixture
-def backblaze_storage():
+def storage():
     credentials = {
         'account_id': '23424',
         'app_key': 'sdfsdfs',
@@ -23,7 +23,7 @@ def backblaze_storage():
          'https://xyz.com/b2api/v1/b2_list_buckets/'),
     )
 )
-def test__get_api_url(backblaze_storage, action, authorized_base_url,
+def test__get_api_url(storage, action, authorized_base_url,
                       expected):
-    backblaze_storage.authorized_base_url = authorized_base_url
-    assert backblaze_storage._get_api_url(action) == expected
+    storage.authorized_base_url = authorized_base_url
+    assert storage._get_api_url(action) == expected

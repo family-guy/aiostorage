@@ -3,7 +3,8 @@
 """
 import asyncio
 
-from .exceptions import BlobStorageUnrecognizedProviderError
+from .exceptions import (BlobStorageMissingCredentialsError,
+                         BlobStorageUnrecognizedProviderError, )
 from .providers import (Backblaze, ProviderAuthenticationError,
                         ProviderFileUploadError, PROVIDERS, )
 
@@ -45,7 +46,7 @@ class BlobStorage:
             raise BlobStorageUnrecognizedProviderError
         if not all(r in kwargs
                    for r in self.PROVIDER_ADAPTER[provider]['required']):
-            raise KeyError
+            raise BlobStorageMissingCredentialsError
         self.provider = self.PROVIDER_ADAPTER[provider]['adapter'](**kwargs)
         self.loop = asyncio.get_event_loop()
 
@@ -62,7 +63,7 @@ class BlobStorage:
         :raise ProviderFileUploadError: If uploading of the file to the object
                storage provider bucket is unsuccessful.
         :return: Response from object storage provider.
-        :rtype: `dict`
+        :rtype: ``dict``
         """
         auth_response = await self.provider.authenticate()
         if not auth_response:
@@ -82,7 +83,7 @@ class BlobStorage:
         :param list files_to_upload: Files to upload; each file is a `dict`,
                `{'path': str, 'content_type': str}`.
         :return: Some value
-        :rtype: `dict`
+        :rtype: ``dict``
         """
         async def _upload_files():
             futures = []

@@ -17,3 +17,12 @@ class BlobStorageUnrecognizedProviderError(BlobStorageError):
     def __str__(self):
         return ('Unrecognized object storage provider. Please select one of'
                 f' {", ".join(PROVIDERS)}')
+
+
+class BlobStorageMissingCredentialsError(BlobStorageError):
+    """
+    Missing credentials for authenticating to object storage provider.
+    """
+    def __str__(self):
+        return ('Missing credentials for authenticating to object storage '
+                'provider')

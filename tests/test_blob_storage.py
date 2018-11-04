@@ -1,7 +1,8 @@
 import asynctest
 import pytest
 
-from aiostorage import BlobStorage, BlobStorageUnrecognizedProviderError
+from aiostorage import (BlobStorage, BlobStorageMissingCredentialsError,
+                        BlobStorageUnrecognizedProviderError, )
 from aiostorage.providers import (Backblaze, ProviderAuthenticationError,
                                   ProviderFileUploadError, PROVIDERS)
 
@@ -32,14 +33,16 @@ def test_unrecognized_provider():
             f' {", ".join(PROVIDERS)}') == str(err.value)
 
 
-def test_bad_credentials():
+def test_missing_credentials():
     provider = 'backblaze'
     credentials = {
         'accountId': '23423',
         'appKey': 'sdfsdf',
     }
-    with pytest.raises(KeyError):
+    with pytest.raises(BlobStorageMissingCredentialsError) as err:
         BlobStorage(provider, **credentials)
+    assert('Missing credentials for authenticating to object storage provider'
+           == str(err.value))
 
 
 def fake_provider_authenticate_side_effect():

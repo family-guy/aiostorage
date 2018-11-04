@@ -10,9 +10,15 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: conda install python=3.6
-      - run: build-scripts/create-envfile.sh
-      - run: python setup.py sdist
+      - run:
+          name: Install Python
+          command: conda install python=3.6
+      - run:
+          name: Create conda environment file
+          command: build-scripts/create-envfile.sh
+      - run:
+          name: Create package distribution
+          command: python setup.py sdist
       - persist_to_workspace:
           root: dist
           paths:
@@ -24,23 +30,31 @@ jobs:
       - checkout
       - attach_workspace:
           at: dist
-      - run: conda env update --name root --file dist/environment.yml
-      - run: pip install --upgrade pip
-      - run: pip install --requirement requirements-dev.txt dist/*.tar.gz
-      - run: flake8
-      - run: pytest
+      - run:
+          name: Build conda environment
+          command: build-scripts/build-env.sh
+      - run:
+          name: Linting
+          command: flake8
+      - run:
+          name: Unit tests
+          command: pytest
 
-  api-test:
+  provider-api-test:
     <<: *defaults
     steps:
       - checkout
       - attach_workspace:
           at: dist
-      - run: conda env update --name root --file dist/environment.yml
-      - run: pip install --upgrade pip
-      - run: pip install --requirement requirements-dev.txt dist/*.tar.gz
-      - run: echo $'[pytest]\naddopts = -vv -k tests/providers/apis' > custom.ini
-      - run: pytest -c custom.ini
+      - run:
+          name: Build conda environment
+          command: build-scripts/build-env.sh
+      - run:
+          name: Create pytest configuration
+          command: echo $'[pytest]\naddopts = -vv -k tests/providers/apis' > custom.ini
+      - run:
+          name: Provider API tests
+          command: pytest -c custom.ini
 
   pypi:
     <<: *defaults
@@ -48,9 +62,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: dist
-      - run: pip install --upgrade pip
-      - run: pip install twine
-      - run: build-scripts/upload-project.sh
+      - run:
+          name: Upload package
+          command: build-scripts/upload-project.sh
 
 workflows:
   version: 2
@@ -60,7 +74,7 @@ workflows:
       - unit-test:
           requires:
             - build
-      - api-test:
+      - provider-api-test:
           requires:
             - unit-test
           filters:
@@ -68,7 +82,7 @@ workflows:
               only: master
       - pypi:
           requires:
-            - api-test
+            - provider-api-test
           filters:
             branches:
               only: master
