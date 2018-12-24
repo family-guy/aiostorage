@@ -76,7 +76,7 @@ def mock_provider_upload_file(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_upload_file(storage, mock_provider_authenticate,
-                            mock_provider_upload_file):
+                           mock_provider_upload_file):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
     fake_result = {
