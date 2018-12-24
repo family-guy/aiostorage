@@ -75,7 +75,7 @@ def mock_provider_upload_file(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test__upload_file(storage, mock_provider_authenticate,
+async def test_upload_file(storage, mock_provider_authenticate,
                             mock_provider_upload_file):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
@@ -85,7 +85,7 @@ async def test__upload_file(storage, mock_provider_authenticate,
         'fileBucketId': bucket_id,
         'fileContentType': file_to_upload['content_type']
     }
-    assert fake_result == await storage._upload_file(bucket_id, file_to_upload)
+    assert fake_result == await storage.upload_file(bucket_id, file_to_upload)
 
 
 def fake_provider_authenticate_error_side_effect():
@@ -104,14 +104,14 @@ def mock_provider_authenticate_error(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test__upload_file_authentication_error(
+async def test_upload_file_authentication_error(
     storage,
     mock_provider_authenticate_error
 ):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
     with pytest.raises(ProviderAuthenticationError):
-        await storage._upload_file(bucket_id, file_to_upload)
+        await storage.upload_file(bucket_id, file_to_upload)
 
 
 def fake_provider_upload_file_error_side_effect(bucket_id, file_to_upload,
@@ -131,7 +131,7 @@ def mock_provider_upload_file_error(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test__upload_file_upload_file_error(
+async def test_upload_file_upload_file_error(
     storage,
     mock_provider_upload_file_error,
     mock_provider_authenticate
@@ -139,24 +139,4 @@ async def test__upload_file_upload_file_error(
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
     with pytest.raises(ProviderFileUploadError):
-        await storage._upload_file(bucket_id, file_to_upload)
-
-
-def test_upload_files(storage, mock_provider_authenticate,
-                      mock_provider_upload_file):
-    bucket_id = '3432'
-    files_to_upload = (
-        {'content_type': 'video/mp4', 'path': 'hello.mp4'},
-        {'content_type': 'audio/mp3', 'path': 'bye.mp3'},
-        {'content_type': 'application/pdf', 'path': 'doc.pdf'},
-    )
-    fake_results = [
-        {
-            'fileUploaded': file_to_upload['path'],
-            'fileId': 234234,
-            'fileBucketId': bucket_id,
-            'fileContentType': file_to_upload['content_type']
-        }
-        for file_to_upload in files_to_upload
-    ]
-    assert storage.upload_files(bucket_id, files_to_upload) == fake_results
+        await storage.upload_file(bucket_id, file_to_upload)
