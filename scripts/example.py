@@ -1,7 +1,14 @@
 import asyncio
+import logging
 import os
 
 import aiostorage
+
+logging.basicConfig(
+    level='INFO',
+    format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
 
 video_dir = os.path.join('tests', 'data', 'videos')
 video_files = (
@@ -28,5 +35,4 @@ coros = [storage.upload_file(bucket, video) for video in videos]
 parent_future = asyncio.gather(*coros)
 loop = asyncio.get_event_loop()
 results = loop.run_until_complete(parent_future)
-print('results', results)
 loop.close()
