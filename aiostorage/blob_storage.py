@@ -75,7 +75,7 @@ class BlobStorage:
         if not auth_response:
             raise ProviderAuthenticationError
         logger.debug('Authentication successful')
-        logger.debug('Uploading file')
+        logger.debug('Uploading')
         upload_file_response = await self.provider.upload_file(
             bucket_id, file_to_upload['path'], file_to_upload['content_type'])
         if not upload_file_response:
