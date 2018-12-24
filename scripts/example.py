@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 import aiostorage
@@ -23,4 +24,9 @@ credentials = {
 }
 bucket = os.environ['BACKBLAZE_TEST_BUCKET_ID']
 storage = aiostorage.BlobStorage(provider, **credentials)
-storage.upload_files(bucket, videos)
+coros = [storage.upload_file(bucket, video) for video in videos]
+parent_future = asyncio.gather(*coros)
+loop = asyncio.get_event_loop()
+results = loop.run_until_complete(parent_future)
+print('results', results)
+loop.close()

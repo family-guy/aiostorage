@@ -40,7 +40,7 @@ class BlobStorage:
             * *app_key* (``str``) --
               Application key (Backblaze).
 
-        .. automethod:: _upload_file
+        .. automethod:: upload_file
         """
         if provider not in PROVIDERS:
             raise BlobStorageUnrecognizedProviderError
@@ -50,7 +50,7 @@ class BlobStorage:
         self.provider = self.PROVIDER_ADAPTER[provider]['adapter'](**kwargs)
         self.loop = asyncio.get_event_loop()
 
-    async def _upload_file(self, bucket_id, file_to_upload):
+    async def upload_file(self, bucket_id, file_to_upload):
         """
         Upload a single file to the object storage provider.
 
@@ -73,23 +73,3 @@ class BlobStorage:
         if not upload_file_response:
             raise ProviderFileUploadError
         return upload_file_response
-
-    def upload_files(self, bucket_id, files_to_upload):
-        """
-        Upload multiple files to the object storage provider.
-
-        :param str bucket_id: Object storage provider bucket to upload files
-               to.
-        :param list files_to_upload: Files to upload; each file is a `dict`,
-               `{'path': str, 'content_type': str}`.
-        :return: Some value
-        :rtype: ``dict``
-        """
-        async def _upload_files():
-            futures = []
-            for file_to_upload in files_to_upload:
-                future = asyncio.ensure_future(
-                    self._upload_file(bucket_id, file_to_upload))
-                futures.append(future)
-            return await asyncio.gather(*futures)
-        return self.loop.run_until_complete(_upload_files())
