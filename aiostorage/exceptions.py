@@ -1,5 +1,5 @@
 """
-Exceptions for errors whilst using the `BlobStorage` class.
+This module contains exceptions for the `BlobStorage` class.
 """
 from .providers import PROVIDERS
 

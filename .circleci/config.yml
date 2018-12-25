@@ -39,6 +39,9 @@ jobs:
       - run:
           name: Unit tests
           command: pytest
+      - run:
+          name: Unit test coverage
+          command: codecov
 
   provider-api-test:
     <<: *defaults
