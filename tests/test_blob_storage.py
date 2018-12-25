@@ -8,6 +8,7 @@ from aiostorage.providers.backblaze import Backblaze
 from aiostorage.providers.exceptions import (ProviderAuthenticationError,
                                              ProviderFileUploadError)
 
+
 @pytest.fixture
 def storage():
     provider = 'backblaze'
