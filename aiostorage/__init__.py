@@ -24,7 +24,7 @@ from .blob_storage import BlobStorage
 from .exceptions import (BlobStorageMissingCredentialsError,
                          BlobStorageUnrecognizedProviderError,)
 
-__version__ = '0.1.11'
+__version__ = '0.1.12'
 
 __all__ = ['BlobStorage', 'BlobStorageUnrecognizedProviderError',
            'BlobStorageMissingCredentialsError']
