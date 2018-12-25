@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from aiostorage.providers import Backblaze
+from aiostorage.providers.backblaze import Backblaze
 
 VIDEOS_PATH = os.path.join('tests', 'data', 'videos')
 BUCKET_ID = os.environ['BACKBLAZE_TEST_BUCKET_ID']

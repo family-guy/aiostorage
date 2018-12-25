@@ -4,6 +4,9 @@ aiostorage.providers package
 Submodules
 ----------
 
+*Full documentation of each module in this package (aimed at library
+developers):*
+
 aiostorage.providers.backblaze module
 -------------------------------------
 
@@ -23,6 +26,8 @@ aiostorage.providers.exceptions module
 
 Module contents
 ---------------
+
+*Package summary (aimed at library developers):*
 
 .. automodule:: aiostorage.providers
     :members:

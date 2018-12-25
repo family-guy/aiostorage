@@ -1,5 +1,5 @@
 """
-Exceptions for errors whilst contacting an object storage provider API.
+This module contains exceptions for object storage provider API errors.
 """
 
 

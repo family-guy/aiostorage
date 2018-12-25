@@ -11,6 +11,9 @@ Subpackages
 Submodules
 ----------
 
+*Full documentation of each module in this package (aimed at library
+developers):* 
+
 aiostorage.blob\_storage module
 -------------------------------
 
@@ -30,6 +33,9 @@ aiostorage.exceptions module
 
 Module contents
 ---------------
+
+*Package summary and abridged documentation of exported classes (aimed at end
+users):*
 
 .. automodule:: aiostorage
     :members:

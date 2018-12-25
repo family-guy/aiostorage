@@ -1,16 +1,11 @@
 """
-Asynchronous wrappers around object storage provider APIs.
+This package contains asynchronous wrappers for the following object storage
+provider APIs
 
-For internal usage only.
+- Backblaze B2 Cloud Storage
+
+It is for internal usage only.
 """
-from .backblaze import Backblaze
-from .exceptions import (ProviderAuthenticationError,
-                         ProviderAuthorizationError,
-                         ProviderFileUploadError,
-                         ProviderGetUploadUrlError, )
-
-
 PROVIDERS = ('backblaze', )
-__all__ = ['Backblaze', 'ProviderAuthenticationError', 'PROVIDERS',
-           'ProviderGetUploadUrlError', 'ProviderAuthorizationError',
-           'ProviderFileUploadError']
+
+__all__ = ['PROVIDERS']

@@ -1,5 +1,5 @@
 """
-`Backblaze` class.
+This module contains the `Backblaze` class.
 """
 import hashlib
 import os
@@ -60,7 +60,7 @@ class Backblaze:
 
     async def authenticate(self):
         """
-        Authenticate to the API and update authorization attributes.
+        **async** Authenticate to the API and update authorization attributes.
 
         :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing authorization details.
@@ -82,7 +82,7 @@ class Backblaze:
 
     async def _get_upload_url(self, bucket_id):
         """
-        Retrieve URL used to upload a file.
+        **async** Retrieve URL used to upload a file.
 
         :param str bucket_id: Bucket to upload file to.
         :raise ClientResponseError: If HTTP status code >= 400.
@@ -103,7 +103,7 @@ class Backblaze:
 
     async def upload_file(self, bucket_id, file_to_upload, content_type):
         """
-        Upload file.
+        **async** Upload file.
 
         :param str bucket_id: Bucket to upload file to.
         :param str file_to_upload: Path of file to upload.
