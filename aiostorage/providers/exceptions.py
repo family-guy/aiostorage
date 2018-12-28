@@ -9,12 +9,6 @@ class ProviderError(Exception):
     """
 
 
-class ProviderAuthenticationError(ProviderError):
-    """
-    Unable to authenticate.
-    """
-
-
 class ProviderGetUploadUrlError(ProviderError):
     """
     Unable to get file upload URL.
@@ -23,7 +17,7 @@ class ProviderGetUploadUrlError(ProviderError):
 
 class ProviderAuthorizationError(ProviderError):
     """
-    Unable to perform action due to lack of authorization.
+    Unable to authorize.
     """
 
 
