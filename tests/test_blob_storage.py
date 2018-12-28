@@ -43,7 +43,7 @@ def test_missing_credentials():
     }
     with pytest.raises(BlobStorageMissingCredentialsError) as err:
         BlobStorage(provider, **credentials)
-    assert('Missing credentials for authenticating to object storage provider'
+    assert('Missing credentials for object storage provider authorization'
            == str(err.value))
 
 

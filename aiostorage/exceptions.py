@@ -24,4 +24,4 @@ class BlobStorageMissingCredentialsError(BlobStorageError):
     Missing credentials for object storage provider authorization.
     """
     def __str__(self):
-        return 'Missing credentials for object storage authorization'
+        return 'Missing credentials for object storage provider authorization'
