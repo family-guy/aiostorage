@@ -1,4 +1,4 @@
-﻿![pypi version 0.1.14](https://img.shields.io/badge/pypi-v0.1.14-orange.svg)
+﻿![pypi version 0.1.15](https://img.shields.io/badge/pypi-v0.1.15-orange.svg)
 ![python version 3.6](https://img.shields.io/badge/python-3.6-blue.svg)
 ![aiohttp version 3.x.x](https://img.shields.io/badge/aiohttp-3.x.x-blue.svg)
 ![build passing](https://img.shields.io/badge/build-passing-brightgreen.svg) 
