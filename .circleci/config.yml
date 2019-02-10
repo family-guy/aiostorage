@@ -51,7 +51,7 @@ jobs:
           command: build-scripts/build-env.sh
       - run:
           name: Create pytest configuration
-          command: echo $'[pytest]\naddopts = -vv --cov=aiostorage tests/' > custom.ini
+          command: echo $'[pytest]\naddopts = -vv --cov=aiostorage aiostorage/tests/' > custom.ini
       - run:
           name: All tests
           command: pytest -c custom.ini
