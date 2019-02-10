@@ -19,13 +19,13 @@ def storage():
 
 @pytest.mark.asyncio
 async def test_authenticate(storage):
-    result = await storage.authenticate()
+    result = await storage.authorize()
     assert {'apiUrl', 'authorizationToken'}.issubset(result)
 
 
 @pytest.mark.asyncio
 async def test__get_upload_url(storage):
-    result = await storage.authenticate()
+    result = await storage.authorize()
     assert {'apiUrl', 'authorizationToken'}.issubset(result)
     result = await storage._get_upload_url(BUCKET_ID)
     assert {'uploadUrl', 'authorizationToken'}.issubset(result)
@@ -48,7 +48,7 @@ async def test__get_upload_url(storage):
 @pytest.mark.asyncio
 async def test_upload_file(storage, bucket_id, file_to_upload, content_type,
                            expected):
-    result = await storage.authenticate()
+    result = await storage.authorize()
     assert {'apiUrl', 'authorizationToken'}.issubset(result)
     result = await storage.upload_file(bucket_id, os.path.join(
         VIDEOS_PATH, file_to_upload), content_type)

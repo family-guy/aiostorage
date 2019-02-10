@@ -58,9 +58,10 @@ class Backblaze:
         else:
             return urllib.parse.urljoin(self.authorized_base_url, path)
 
-    async def authenticate(self):
+    async def authorize(self):
         """
-        **async** Authenticate to the API and update authorization attributes.
+        **async** Perform API authorization and update authorization
+        attributes.
 
         :raise ClientResponseError: If HTTP status code >= 400.
         :return: JSON API response containing authorization details.

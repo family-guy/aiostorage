@@ -7,7 +7,7 @@ from .exceptions import (BlobStorageMissingCredentialsError,
                          BlobStorageUnrecognizedProviderError, )
 from .providers import PROVIDERS
 from .providers.backblaze import Backblaze
-from .providers.exceptions import (ProviderAuthenticationError,
+from .providers.exceptions import (ProviderAuthorizationError,
                                    ProviderFileUploadError)
 
 LOGGER = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class BlobStorage:
 
     def __init__(self, provider, **kwargs):
         r"""
-        Set the object storage provider and the event loop.
+        Set the object storage provider.
 
         :param str provider: Name of the object storage provider. Must be one
                of `'backblaze'`.
@@ -60,7 +60,7 @@ class BlobStorage:
                to.
         :param dict file_to_upload: Local file to upload,
                `{'path': str, 'content_type': str}`.
-        :raise ProviderAuthenticationError: If authentication to the object
+        :raise ProviderAuthorizationError: If authorization to the object
                storage provider is unsuccessful.
         :raise ProviderFileUploadError: If uploading of the file to the object
                storage provider bucket is unsuccessful.
@@ -71,9 +71,9 @@ class BlobStorage:
                             type(self.provider).__name__, bucket_id)
         LOGGER.info('Uploading file "%s" to %s bucket %s' % upload_file_meta)
         LOGGER.debug('Authenticating')
-        auth_response = await self.provider.authenticate()
+        auth_response = await self.provider.authorize()
         if not auth_response:
-            raise ProviderAuthenticationError
+            raise ProviderAuthorizationError
         LOGGER.debug('Authentication successful')
         LOGGER.debug('Uploading')
         upload_file_response = await self.provider.upload_file(
