@@ -1,6 +1,6 @@
 import pytest
 
-from aiostorage.providers.backblaze import Backblaze
+from ...providers.backblaze import Backblaze
 
 
 @pytest.fixture

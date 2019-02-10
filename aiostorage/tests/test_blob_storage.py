@@ -1,11 +1,11 @@
 import asynctest
 import pytest
 
-from aiostorage import (BlobStorage, BlobStorageMissingCredentialsError,
+from .. import (BlobStorage, BlobStorageMissingCredentialsError,
                         BlobStorageUnrecognizedProviderError, )
-from aiostorage.providers import PROVIDERS
-from aiostorage.providers.backblaze import Backblaze
-from aiostorage.providers.exceptions import (ProviderAuthenticationError,
+from ..providers import PROVIDERS
+from ..providers.backblaze import Backblaze
+from ..providers.exceptions import (ProviderAuthenticationError,
                                              ProviderFileUploadError)
 
 
