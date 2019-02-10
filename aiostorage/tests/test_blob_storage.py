@@ -1,12 +1,9 @@
 import asynctest
 import pytest
 
-from aiostorage import (BlobStorage, BlobStorageMissingCredentialsError,
-                        BlobStorageUnrecognizedProviderError, )
-from aiostorage.providers import PROVIDERS
-from aiostorage.providers.backblaze import Backblaze
-from aiostorage.providers.exceptions import (ProviderAuthorizationError,
-                                             ProviderFileUploadError)
+from .. import (BlobStorage, BlobStorageMissingCredentialsError,
+                BlobStorageUnrecognizedProviderError, )
+from ..providers import backblaze, exceptions, PROVIDERS
 
 
 @pytest.fixture
@@ -60,19 +57,21 @@ def fake_provider_upload_file_side_effect(bucket_id, file_to_upload,
 @pytest.fixture
 def mock_provider_authorize(monkeypatch):
     fake_provider_authorize = asynctest.CoroutineMock(
-        Backblaze.authorize,
+        backblaze.Backblaze.authorize,
         side_effect=fake_provider_authorize_side_effect
     )
-    monkeypatch.setattr(Backblaze, 'authorize', fake_provider_authorize)
+    monkeypatch.setattr(
+        backblaze.Backblaze, 'authorize', fake_provider_authorize)
     return fake_provider_authorize
 
 
 @pytest.fixture
 def mock_provider_upload_file(monkeypatch):
     fake_provider_upload_file = asynctest.CoroutineMock(
-        Backblaze.upload_file,
+        backblaze.Backblaze.upload_file,
         side_effect=fake_provider_upload_file_side_effect)
-    monkeypatch.setattr(Backblaze, 'upload_file', fake_provider_upload_file)
+    monkeypatch.setattr(
+        backblaze.Backblaze, 'upload_file', fake_provider_upload_file)
     return fake_provider_upload_file
 
 
@@ -97,11 +96,11 @@ def fake_provider_authorize_error_side_effect():
 @pytest.fixture
 def mock_provider_authorize_error(monkeypatch):
     fake_provider_authorize_error = asynctest.CoroutineMock(
-        Backblaze.authorize,
+        backblaze.Backblaze.authorize,
         side_effect=fake_provider_authorize_error_side_effect
     )
     monkeypatch.setattr(
-        Backblaze, 'authorize', fake_provider_authorize_error)
+        backblaze.Backblaze, 'authorize', fake_provider_authorize_error)
     return fake_provider_authorize_error
 
 
@@ -112,7 +111,7 @@ async def test_upload_file_authorization_error(
 ):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
-    with pytest.raises(ProviderAuthorizationError):
+    with pytest.raises(exceptions.ProviderAuthorizationError):
         await storage.upload_file(bucket_id, file_to_upload)
 
 
@@ -124,11 +123,11 @@ def fake_provider_upload_file_error_side_effect(bucket_id, file_to_upload,
 @pytest.fixture
 def mock_provider_upload_file_error(monkeypatch):
     fake_provider_upload_file_error = asynctest.CoroutineMock(
-        Backblaze.upload_file,
+        backblaze.Backblaze.upload_file,
         side_effect=fake_provider_upload_file_error_side_effect
     )
     monkeypatch.setattr(
-        Backblaze, 'upload_file', fake_provider_upload_file_error)
+        backblaze.Backblaze, 'upload_file', fake_provider_upload_file_error)
     return fake_provider_upload_file_error
 
 
@@ -140,5 +139,5 @@ async def test_upload_file_upload_file_error(
 ):
     bucket_id = '3432'
     file_to_upload = {'content_type': 'video/mp4', 'path': 'hello.mp4'}
-    with pytest.raises(ProviderFileUploadError):
+    with pytest.raises(exceptions.ProviderFileUploadError):
         await storage.upload_file(bucket_id, file_to_upload)
